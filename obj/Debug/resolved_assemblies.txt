@@ -1,0 +1,9 @@
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\GetWifi.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\Mono.Android.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\mscorlib.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.Core.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.Xml.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.Xml.Linq.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.Runtime.Serialization.dll
+C:\Users\koizumi0816\Desktop\卒研\Sotuken\GetWifi\obj\Debug\assemblies\System.ServiceModel.Internals.dll

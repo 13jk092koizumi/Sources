@@ -1,0 +1,4 @@
+GetWifi.MainActivity, GetWifi;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
+GetWifi.MainActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
+GetWifi.MainActivity;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
+getwifi.MainActivity;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
