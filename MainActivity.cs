@@ -27,18 +27,46 @@ namespace GetWifi {
             wifi.StartScan();
             //結果の取得
             var results = wifi.ScanResults;
+
+            sortScanResult(results); //電波強度で昇順ソート
+
             //結果をTextViewにセット
             var sb = new System.Text.StringBuilder();
 
             for (int i=0; i<results.Count; ++i) {
-                sb.Append(results[i].ToString());
+                int index = i;
+                sb.Append((++index)+":\n");
+                sb.Append("SSID:\t\t"+results[i].Ssid+"\n");
+                sb.Append("BSSID:\t\t" + results[i].Bssid + "\n");
+                sb.Append("Level:\t\t"+results[i].Level +" dBm\n");
                 sb.Append("\n");                
             }
             tv.SetTextSize(Android.Util.ComplexUnitType.Dip, 20);
             tv.Text = sb.ToString();
             linearLayout.AddView(tv);
             
+        } //OnCreate()
+        
+        private void swap(System.Collections.Generic.IList<ScanResult> list, int indexA, int indexB) {
+            ScanResult temp= list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = temp;
+        } //swap()
+
+        /*resultsのリスト配列を電波強度(Level)でソート*/
+        private void sortScanResult(System.Collections.Generic.IList<ScanResult> list) {
+            int size = list.Count; //配列の大きさ取得
+            int i, j; //for文用
+            for (i = 0; i < size; ++i) {
+                for (j = size - 1; j > i; --j) {
+                    if (list[j - 1].Level < list[j].Level) { //電波強度が前の要素より大きかったら
+                        swap(list, j - 1, j); //入れ替え
+                    }
+                }
+            } //sortScanResult()
+
         }
+
     }
 }
 
