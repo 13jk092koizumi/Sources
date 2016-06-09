@@ -56,6 +56,7 @@ namespace GetWifi {
             var btnCreate = FindViewById<Button>(Resource.Id.btnCreateDB);
             var btnSingle = FindViewById<Button>(Resource.Id.btnCreateSingle);
             var btnList = FindViewById<Button>(Resource.Id.btnList);
+            var btnShow = FindViewById<Button>(Resource.Id.btn_showTable);
             var txtResult = FindViewById<TextView>(Resource.Id.txtResults);
             //パスの作成
             var docsFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
@@ -65,7 +66,7 @@ namespace GetWifi {
             //ボタンのイベント作成
             btnCreate.Click += delegate {
                 var result = createDatabase(pathToDatabace);
-                txtResult.Text = result + "\n";
+                txtResult.Text = result+" TO: " + pathToDatabace + "\n";
                 //データベースに接続できたら、シングルとリストのボタンを有効に
                 if(result == "Database created") {
                     btnList.Enabled = btnSingle.Enabled = true;
@@ -87,8 +88,12 @@ namespace GetWifi {
                 var records = findNumberRecords(pathToDatabace);
                 txtResult.Text += string.Format("{0}\nNumber of records = {1}\n", result, records);
             };
-                       
+            btnShow.Click += delegate {
+                var data = sqliteTest(pathToDatabace);
+                txtResult.Text += data;
                 
+            };
+                  
         } // OnCreate()
         
         /*要素を入れ替えます。*/
@@ -160,6 +165,38 @@ namespace GetWifi {
                 return -1;
             }
         } // findNumberRecords()
+
+        private string sqliteTest(string path) {
+            try {
+                
+                var texts = "";
+                var db = new SQLiteConnection(path);
+                //Get<>のテスト
+                var GET = db.Get<Person>(1); //id1を指定
+                //Table<>のテスト
+                var TABLE = db.Table<Person>();
+                string tableTxt="";
+                foreach(Person res in TABLE) {
+                    tableTxt += "\n"+res.ToString();
+                }
+                //Query<>のテスト
+                var QUERY = db.Query<Person>("SELECT * FROM Person");
+                string queryTxt = "";
+                foreach (Person res in QUERY) {
+                    queryTxt += "\n" + res.ToString();
+                }
+                //Executeのテスト
+                var EXECUTE = db.Execute("SELECT * FROM Person");
+
+                texts = "\nGET:\n" + GET
+                            +"\nTABLE:"+tableTxt        
+                            +"\nQUERY:"+queryTxt;
+                            
+                return texts;
+            }catch(SQLiteException ex) {
+                return ex.Message;
+            }
+        }
 
     } // class MainActivity()
 } // namespace GetWifi
