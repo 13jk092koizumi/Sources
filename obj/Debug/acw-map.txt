@@ -1,4 +1,4 @@
-GetWifi.MainActivity, GetWifi;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
-GetWifi.MainActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
-GetWifi.MainActivity;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
-getwifi.MainActivity;md5d18b41b396295f3b35eef5814bee3fe1.MainActivity
+GetWifi.src.MainActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
+GetWifi.src.MainActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
+GetWifi.src.MainActivity;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
+getwifi.src.MainActivity;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity

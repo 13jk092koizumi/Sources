@@ -6,37 +6,34 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:weightSum="1"
         android:id="@+id/LLayout">
         <LinearLayout
             android:orientation="horizontal"
             android:minWidth="25px"
             android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/linearLayout1"
-            android:layout_weight=".2"
             android:gravity="center">
             <Button
                 android:text="Create database"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnCreateDB" />
             <Button
-                android:text="Add Single"
+                android:text="Add Data"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnCreateSingle" />
+                android:id="@+id/btnAddData" />
             <Button
-                android:text="Add List"
+                android:text="Show Table Data"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnList" />
-            <Button
-                android:text="Show Table"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_showTable" />
+                android:id="@+id/btnShowTable"
+                android:layout_marginBottom="0.0dp" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -49,25 +46,53 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
             <TextView
-                android:text="Results"
+                android:text="ScanResults"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView1"
                 android:textColor="#fff" />
-            <TextView
+          
+          <TableLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:stretchColumns="*"
+              android:id="@+id/tableTitle">
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtResults"
-                android:layout_marginTop="5dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout3"
-            android:layout_weight=".2" />
+                android:layout_height="match_parent"
+                android:id="@+id/titleRow">
+
+              <TextView
+                  style="@style/tb_style"
+                  android:id="@+id/rowtext1"
+                  android:background="@drawable/tb_stroke1"
+                  android:text="0"/>
+
+              <TextView
+                  style="@style/tb_style"
+                  android:id="@+id/rowtext2"
+                  android:background="@drawable/tb_stroke2"
+                  android:layout_marginLeft="1dp"
+                  android:text="0" />
+
+              <TextView
+                  style="@style/tb_style"
+                  android:id="@+id/rowtext3"
+                  android:background="@drawable/tb_stroke1"
+                  android:layout_marginLeft="1dp"
+                  android:text="0" />
+
+              <TextView
+                  style="@style/tb_style"
+                  android:id="@+id/rowtext4"
+                  android:background="@drawable/tb_stroke2"
+                  android:layout_marginLeft="1dp"
+                  android:text="0" />
+
+            </TableRow>
+          </TableLayout>
+          
+          </LinearLayout>
     </LinearLayout>
 </ScrollView>
