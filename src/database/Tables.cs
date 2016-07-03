@@ -14,16 +14,17 @@ namespace GetWifi {
     public class WifiState_tb {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        [Indexed]
+        public int roomID { get; set; }
         public string BSSID { get; set; }
         public string Capabilities { get; set; }
-        public string Frequency { get; set; }
-        public string Level { get; set; }
+        public int Frequency { get; set; }
+        public int Level { get; set; }
         public string SSID { get; set; }
-        public int Timestamp { get; set; }
 
         public override string ToString() {
-            return string.Format("[WifiState_tb: ID={0},BSSID={1},Capabilities={2},Frequency={3},Level={4},SSID={5},Timestamp={6}]\n",
-                                                ID, BSSID, Capabilities, Frequency, Level, SSID, Timestamp);
+            return string.Format("[WifiState_tb: ID={0},roomID{6},BSSID={1},Capabilities={2},Frequency={3},Level={4},SSID={5}]\n",
+                                                ID, BSSID, Capabilities, Frequency, Level, SSID, roomID);
         }
     } //class Tables
 } //namespace GetWifi

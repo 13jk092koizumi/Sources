@@ -547,50 +547,59 @@ namespace GetWifi
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070011
+			public const int IventText = 2131165201;
+			
 			// aapt resource value: 0x7f070000
 			public const int LLayout = 2131165184;
 			
-			// aapt resource value: 0x7f070003
-			public const int btnAddData = 2131165187;
-			
-			// aapt resource value: 0x7f070002
-			public const int btnCreateDB = 2131165186;
-			
-			// aapt resource value: 0x7f070004
-			public const int btnShowTable = 2131165188;
-			
-			// aapt resource value: 0x7f070001
-			public const int linearLayout1 = 2131165185;
+			// aapt resource value: 0x7f070006
+			public const int btnAddData = 2131165190;
 			
 			// aapt resource value: 0x7f070005
-			public const int linearLayout2 = 2131165189;
-			
-			// aapt resource value: 0x7f070009
-			public const int rowtext1 = 2131165193;
-			
-			// aapt resource value: 0x7f07000a
-			public const int rowtext2 = 2131165194;
-			
-			// aapt resource value: 0x7f07000b
-			public const int rowtext3 = 2131165195;
-			
-			// aapt resource value: 0x7f07000c
-			public const int rowtext4 = 2131165196;
-			
-			// aapt resource value: 0x7f07000d
-			public const int tableLayout = 2131165197;
-			
-			// aapt resource value: 0x7f07000e
-			public const int tableRow = 2131165198;
-			
-			// aapt resource value: 0x7f070007
-			public const int tableTitle = 2131165191;
-			
-			// aapt resource value: 0x7f070006
-			public const int textView1 = 2131165190;
+			public const int btnCreateDB = 2131165189;
 			
 			// aapt resource value: 0x7f070008
-			public const int titleRow = 2131165192;
+			public const int btnDelete = 2131165192;
+			
+			// aapt resource value: 0x7f070003
+			public const int btnInput = 2131165187;
+			
+			// aapt resource value: 0x7f070007
+			public const int btnShowTable = 2131165191;
+			
+			// aapt resource value: 0x7f070001
+			public const int inputTxtLL = 2131165185;
+			
+			// aapt resource value: 0x7f070002
+			public const int input_editTxt = 2131165186;
+			
+			// aapt resource value: 0x7f070004
+			public const int linearLayout1 = 2131165188;
+			
+			// aapt resource value: 0x7f070009
+			public const int linearLayout2 = 2131165193;
+			
+			// aapt resource value: 0x7f07000d
+			public const int rowtext1 = 2131165197;
+			
+			// aapt resource value: 0x7f07000e
+			public const int rowtext2 = 2131165198;
+			
+			// aapt resource value: 0x7f07000f
+			public const int rowtext3 = 2131165199;
+			
+			// aapt resource value: 0x7f070010
+			public const int rowtext4 = 2131165200;
+			
+			// aapt resource value: 0x7f07000b
+			public const int tableLayout = 2131165195;
+			
+			// aapt resource value: 0x7f07000c
+			public const int tableRow = 2131165196;
+			
+			// aapt resource value: 0x7f07000a
+			public const int textView1 = 2131165194;
 			
 			static Id()
 			{

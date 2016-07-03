@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 
 using Android.App;
 using Android.Content;
@@ -14,6 +15,7 @@ using SQLite;
 
 namespace GetWifi.src.database {
     class DBConfig {
+        
         /*テーブルを作ります。*/
         public string createDatabase(string path) {
             try {
@@ -26,6 +28,18 @@ namespace GetWifi.src.database {
                 return ex.Message;
             }
         } //createDatabade();
+
+        public string queryData(string query, string path) {
+            try {
+                var connection = new SQLiteConnection(path);
+                
+                var result = connection.Query<RN_tb>(query);
+                return result.First().ToString();
+            }
+            catch (SQLiteException) {
+                throw;
+            }
+        }
 
         /*データをINSERTします。*/
         public string insertUpdateData(RN_tb rn_tb, WifiState_tb wifi_tb, string path) {
@@ -45,7 +59,7 @@ namespace GetWifi.src.database {
         } // insertUpdateData()
 
         /*データをすべてINSERTします。*/
-        public string insertUpdateAllData(IEnumerable<RN_tb> rn_tbs,IEnumerable<WifiState_tb> wifi_tbs, string path) {
+        public string insertUpdateAllData(List<RN_tb> rn_tbs,List<WifiState_tb> wifi_tbs, string path) {
             try {
                 var db = new SQLiteConnection(path);
                 if (db.InsertAll(rn_tbs) != 0)
@@ -59,6 +73,17 @@ namespace GetWifi.src.database {
                 return ex.Message;
             }
         } // insertUpdateAllData
+
+        public void deleteData(string path) {
+            try {
+                var db = new SQLiteConnection(path);
+                db.DropTable<RN_tb>();
+                db.DropTable<WifiState_tb>();
+            }
+            catch (SQLiteException) {
+                throw;
+            }
+        }
 
         /*レコードの数を取得します*/
         public int findNumberRecords(string path) {
@@ -80,32 +105,62 @@ namespace GetWifi.src.database {
         /// <param name="path">データベースファイルのパス</param>
         /// <param name="query">WifiState_tbを指定したクエリ。無いときはnull</param>
         /// <returns>結果の文字列</returns>
-        public string getTable(string path, string query) {
+        public List<List<string>> getTable(string path, string query ,ref int colums) {
             try {
-                string text = "";
+                var text = string.Empty;
                 var db = new SQLiteConnection(path);
+                var pList = new List<List<string>>();
                 if (query == null) {
                     //Table<>のテスト
                     var rn = db.Table<RN_tb>();
                     var wifi = db.Table<WifiState_tb>();
+                    var cList = new List<string>();
+                    foreach(var room in rn) {
+                        foreach (var ws in wifi) {
+                            cList.Add(room.Room);
+                            cList.Add(ws.SSID);
+                            cList.Add(ws.BSSID);
+                            cList.Add(ws.Level.ToString());
+                        }
+                    }
+                    pList.Add(cList);
+                    //query = "select * from WifiState_tb";
+                    //var Qres = db.Query<WifiState_tb>(query);
+                    //foreach (var item in Qres) { text += "\n" + item.ToString(); }
+                    //var join = from tb1 in db.Table<RN_tb>()
+                    //           join tb2 in db.Table<WifiState_tb>() on tb1.ID equals tb2.ID
+                    //           select tb2;
+                    //select new {
+                    //    id = tb1.ID,
+                    //    room = tb1.Room,
+                    //    ssid = tb2.SSID,
+                    //    bssid = tb2.BSSID,
+                    //    capabilities = tb2.Capabilities,
+                    //    level = tb2.Level,
+                    //    frequency = tb2.Frequency
+                    //};
 
+                    //foreach (var item in join) {
+                    //    text += "\n" + item.ToString();
+                    //}
+                    return pList;
                     foreach (RN_tb res in rn) {
                         text += "\n" + res.ToString();
                     }
                     foreach (WifiState_tb res in wifi) {
                         text += res.ToString();
                     }
-                } else {
-                    var QUERY = db.Query<WifiState_tb>(query);
-                    string queryTxt = "";
-                    foreach (WifiState_tb res in QUERY) {
-                        queryTxt += "\n" + res.ToString();
-                    }
+                //} else {
+                //    var QUERY = db.Query<WifiState_tb>(query);
+                //    foreach (WifiState_tb res in QUERY) {
+                //        text += "\n" + res.ToString();
+                //    }
                 }
-                return text;
+                colums = findNumberRecords(path);
+                return pList;
             }
-            catch (SQLiteException ex) {
-                return ex.Message;
+            catch (SQLiteException) {
+                throw;
             }
         } //getTable()
     }
