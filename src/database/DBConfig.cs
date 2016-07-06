@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Android.Util;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -15,10 +16,12 @@ using SQLite;
 
 namespace GetWifi.src.database {
     class DBConfig {
+        private  SQLiteConnection connection;
         
         /*テーブルを作ります。*/
         public string createDatabase(string path) {
             try {
+                
                 var connection = new SQLiteConnection(path);
                 connection.CreateTable<RN_tb>();
                 connection.CreateTable<WifiState_tb>();
@@ -31,8 +34,8 @@ namespace GetWifi.src.database {
 
         public string queryData(string query, string path) {
             try {
-                var connection = new SQLiteConnection(path);
-                
+                //var connection = new SQLiteConnection(platform, path);
+
                 var result = connection.Query<RN_tb>(query);
                 return result.First().ToString();
             }
@@ -41,11 +44,30 @@ namespace GetWifi.src.database {
             }
         }
 
+        public void insertScanResult(List<Android.Net.Wifi.ScanResult> scanResult, string roomName, string path) {
+            var ws = new List<WifiState_tb>();
+            foreach (var sr in scanResult) {
+                ws.Add(new WifiState_tb {
+                    BSSID = sr.Bssid,
+                    Capabilities = sr.Capabilities,
+                    Frequency = sr.Frequency,
+                    Level = sr.Level,
+                    SSID = sr.Ssid
+                });
+            }
+            var rn = new RN_tb {
+                Room = roomName,
+           };
+            //var db = new SQLiteConnection(platform, path);
+            
+            
+        }
+
         /*データをINSERTします。*/
         public string insertUpdateData(RN_tb rn_tb, WifiState_tb wifi_tb, string path) {
             try {
                 var db = new SQLiteConnection(path);
-                
+
                 if (db.Insert(rn_tb) != 0)
                     db.Update(rn_tb);
                 if (db.Insert(wifi_tb) != 0)
@@ -59,7 +81,7 @@ namespace GetWifi.src.database {
         } // insertUpdateData()
 
         /*データをすべてINSERTします。*/
-        public string insertUpdateAllData(List<RN_tb> rn_tbs,List<WifiState_tb> wifi_tbs, string path) {
+        public string insertUpdateAllData(List<RN_tb> rn_tbs, List<WifiState_tb> wifi_tbs, string path) {
             try {
                 var db = new SQLiteConnection(path);
                 if (db.InsertAll(rn_tbs) != 0)
@@ -105,7 +127,7 @@ namespace GetWifi.src.database {
         /// <param name="path">データベースファイルのパス</param>
         /// <param name="query">WifiState_tbを指定したクエリ。無いときはnull</param>
         /// <returns>結果の文字列</returns>
-        public List<List<string>> getTable(string path, string query ,ref int colums) {
+        public List<List<string>> getTable(string path, string query, ref int colums) {
             try {
                 var text = string.Empty;
                 var db = new SQLiteConnection(path);
@@ -115,7 +137,7 @@ namespace GetWifi.src.database {
                     var rn = db.Table<RN_tb>();
                     var wifi = db.Table<WifiState_tb>();
                     var cList = new List<string>();
-                    foreach(var room in rn) {
+                    foreach (var room in rn) {
                         foreach (var ws in wifi) {
                             cList.Add(room.Room);
                             cList.Add(ws.SSID);
@@ -150,11 +172,11 @@ namespace GetWifi.src.database {
                     foreach (WifiState_tb res in wifi) {
                         text += res.ToString();
                     }
-                //} else {
-                //    var QUERY = db.Query<WifiState_tb>(query);
-                //    foreach (WifiState_tb res in QUERY) {
-                //        text += "\n" + res.ToString();
-                //    }
+                    //} else {
+                    //    var QUERY = db.Query<WifiState_tb>(query);
+                    //    foreach (WifiState_tb res in QUERY) {
+                    //        text += "\n" + res.ToString();
+                    //    }
                 }
                 colums = findNumberRecords(path);
                 return pList;

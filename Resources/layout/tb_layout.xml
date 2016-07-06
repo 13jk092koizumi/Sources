@@ -28,5 +28,5 @@
       android:id="@+id/rowtext4"
       android:background="@drawable/tb_stroke2"
       android:text="0" />
-      
+
 </TableRow>

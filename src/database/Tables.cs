@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using System.Collections.Generic;
+using SQLite;
 
 namespace GetWifi {
     public class RN_tb {
@@ -14,8 +15,6 @@ namespace GetWifi {
     public class WifiState_tb {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
-        [Indexed]
-        public int roomID { get; set; }
         public string BSSID { get; set; }
         public string Capabilities { get; set; }
         public int Frequency { get; set; }
@@ -23,8 +22,8 @@ namespace GetWifi {
         public string SSID { get; set; }
 
         public override string ToString() {
-            return string.Format("[WifiState_tb: ID={0},roomID{6},BSSID={1},Capabilities={2},Frequency={3},Level={4},SSID={5}]\n",
-                                                ID, BSSID, Capabilities, Frequency, Level, SSID, roomID);
+            return string.Format("[WifiState_tb: ID={0}, BSSID={1},Capabilities={2},Frequency={3},Level={4},SSID={5}]\n",
+                                                ID, BSSID, Capabilities, Frequency, Level, SSID);
         }
     } //class Tables
 } //namespace GetWifi

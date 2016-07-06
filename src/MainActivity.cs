@@ -27,11 +27,11 @@ namespace GetWifi.src {
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             var tbLayout = FindViewById<TableLayout>(Resource.Id.tableLayout);
- 
+
             // スキャン結果の取得
             var results = getWifi();
             // 結果を表示
-            var txtView1 = FindViewById<TextView>( Resource.Id.textView1);
+            var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
             var apNum = "APを" + results.Count + "件見つけました。";
             txtView1.Text = apNum;
             sortScanResult(results); //電波強度で昇順ソート
@@ -43,7 +43,7 @@ namespace GetWifi.src {
 
                 var ssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
                 ssid.SetText(results[i].Ssid, buf_normal);
-                
+
                 var bssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
                 bssid.SetText(results[i].Bssid, buf_normal);
 
@@ -63,7 +63,7 @@ namespace GetWifi.src {
             var btnAddData = FindViewById<Button>(Resource.Id.btnAddData);
             var btnShow = FindViewById<Button>(Resource.Id.btnShowTable);
             var btnDelete = FindViewById<Button>(Resource.Id.btnDelete);
-            
+
             //DB作成
             db = new database.DBConfig();
             //パスの作成
@@ -93,7 +93,7 @@ namespace GetWifi.src {
                 var wifi_tb = new List<WifiState_tb>();
 
                 createDataList(ref rn_tb, ref wifi_tb, results);
-                
+
                 var result = db.insertUpdateAllData(rn_tb, wifi_tb, pathToDatabace);
                 Toast.MakeText(this,string.Format("{0}件追加しました。\n", results.Count), ToastLength.Short).Show();
             };
@@ -104,9 +104,9 @@ namespace GetWifi.src {
                 var txtView = FindViewById<TextView>(Resource.Id.IventText);
                 //txtView.Text = string.Format("DBから{0}件のデータを取得しました。\n",colums);
                 var res = db.getTable(pathToDatabace, null, ref colums);
-                foreach(var r in res) {
+                foreach (var r in res) {
                     Console.WriteLine(string.Format("[{0}]\n", r.ToString()));
-                    foreach(var rc in r) {
+                    foreach (var rc in r) {
                         Console.WriteLine(string.Format("[{0}]\n", rc));
                     }
                 }
@@ -131,27 +131,27 @@ namespace GetWifi.src {
         /// DBへ格納するデータの整理
         /// </summary>
         private void createDataList(ref List<RN_tb> rn_tb, ref List<WifiState_tb> wifi_tb, System.Collections.Generic.IList<ScanResult> list) {
-            rn_tb.Add( new RN_tb { Room = room } );
-            for (int i=0; i<list.Count; ++i) {
-                wifi_tb.Add( new WifiState_tb {
+            rn_tb.Add(new RN_tb { Room = room });
+            for (int i = 0; i < list.Count; ++i) {
+                wifi_tb.Add(new WifiState_tb {
                     SSID = list[i].Ssid,
-                    BSSID=list[i].Bssid,
-                    Capabilities=list[i].Capabilities,
-                    Level= list[i].Level,
-                    Frequency= list[i].Frequency,
-                 });
+                    BSSID = list[i].Bssid,
+                    Capabilities = list[i].Capabilities,
+                    Level = list[i].Level,
+                    Frequency = list[i].Frequency,
+                });
             }
-            
+
         }
-        
-       /// <summary>
-       /// 要素を入れ替えます。
-       /// </summary>
-       /// <param name="list"></param>
-       /// <param name="indexA">入れ替える添え字</param>
-       /// <param name="indexB">入れ替える添え字</param>
+
+        /// <summary>
+        /// 要素を入れ替えます。
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="indexA">入れ替える添え字</param>
+        /// <param name="indexB">入れ替える添え字</param>
         private void swap(System.Collections.Generic.IList<ScanResult> list, int indexA, int indexB) {
-            ScanResult temp= list[indexA];
+            ScanResult temp = list[indexA];
             list[indexA] = list[indexB];
             list[indexB] = temp;
         } // swap()
