@@ -6,7 +6,8 @@
   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <application android:label="GetWifi" android:name="android.app.Application" android:allowBackup="true" android:icon="@drawable/icon" android:debuggable="true">
+  <application android:label="GetWifi" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
+    <activity android:name="md5b33c39e1feeb457f8814806d80f2b84a.TableActivity" />
     <activity android:icon="@drawable/icon" android:label="GetWifi" android:name="md5b33c39e1feeb457f8814806d80f2b84a.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

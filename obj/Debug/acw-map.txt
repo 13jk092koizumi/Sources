@@ -1,3 +1,7 @@
+GetWifi.src.TableActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
+GetWifi.src.TableActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
+GetWifi.src.TableActivity;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
+getwifi.src.TableActivity;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
 GetWifi.src.MainActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
 GetWifi.src.MainActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
 GetWifi.src.MainActivity;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity

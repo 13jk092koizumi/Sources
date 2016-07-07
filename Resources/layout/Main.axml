@@ -17,7 +17,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:singleLine="true"
-                android:maxLength="10"
                 android:hint="計測場所を入力" />
             <Button
                 android:id="@+id/btnInput"
@@ -33,12 +32,6 @@
             android:layout_marginTop="1dp"
             android:weightSum="5"
             android:id="@+id/linearLayout1">
-            <Button
-                android:text="CreateDB"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnCreateDB" />
             <Button
                 android:text="INSERT"
                 android:layout_weight="1"

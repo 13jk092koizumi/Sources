@@ -1,22 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Android.App;
-using Android.Util;
 using Android.Content;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Net.Wifi;
 using Android.OS;
 
-using SQLite;
-
 namespace GetWifi.src {
     [Activity(Label = "GetWifi", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity {
 
+        private IList<ScanResult> results;
         private database.DBConfig db;
         private string pathToDatabase;
         private string room;
@@ -26,39 +22,38 @@ namespace GetWifi.src {
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+            Toast.MakeText(this, "計測場所を入力してください。", ToastLength.Short).Show();
             var tbLayout = FindViewById<TableLayout>(Resource.Id.tableLayout);
-
             // スキャン結果の取得
-            var results = getWifi();
+            results = getWifi();
             // 結果を表示
             var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
             var apNum = "APを" + results.Count + "件見つけました。";
             txtView1.Text = apNum;
-            
-            for (int i = 0; i < results.Count; ++i) {
-                // LayoutInflatorの取得
-                var tb_row = LayoutInflater.Inflate(Resource.Layout.tb_layout, null);
-                var buf_normal = TextView.BufferType.Normal;
+            foreach(var res in results) {
+                var tb_row  = LayoutInflater.Inflate(Resource.Layout.tb_layout, null);
 
-                var ssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
-                ssid.SetText(results[i].Ssid, buf_normal);
+                var ssid      =   tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
+                var bssid     =   tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
+                var level     =   tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
+                var frequency =   tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
+                ssid.Text       =   res.Ssid;
+                bssid.Text      =   res.Bssid;
+                level.Text      =   res.Level.ToString();
+                frequency.Text  =   res.Frequency.ToString();
 
-                var bssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
-                bssid.SetText(results[i].Bssid, buf_normal);
-
-                var level = tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
-                level.SetText(results[i].Level.ToString(), buf_normal);
-
-                var frequency = tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
-                frequency.SetText(results[i].Frequency.ToString(), buf_normal);
                 tbLayout.AddView(tb_row);
             }
+            
+        } // OnCreate()
+
+        protected override void OnResume() {
+            base.OnResume();
 
             //データベースに保存する
             // create variables for onscreen widgets
             var edit = FindViewById<EditText>(Resource.Id.input_editTxt);
             var btnInput = FindViewById<Button>(Resource.Id.btnInput);
-            var btnCreate = FindViewById<Button>(Resource.Id.btnCreateDB);
             var btnAddData = FindViewById<Button>(Resource.Id.btnAddData);
             var btnShow = FindViewById<Button>(Resource.Id.btnShowTable);
             var btnDelete = FindViewById<Button>(Resource.Id.btnDelete);
@@ -68,59 +63,44 @@ namespace GetWifi.src {
             pathToDatabase = System.IO.Path.Combine(docsFolder, "db_sqlnet.db");
             //DB作成
             db = new database.DBConfig(pathToDatabase);
-            btnAddData.Enabled = btnShow.Enabled = false;
+            btnAddData.Enabled = btnShow.Enabled = btnInput.Enabled = false;
+            db.createDatabase();
+            
             //イベント作成
+            edit.AfterTextChanged += (_, __) => btnInput.Enabled = true;
             btnInput.Click += delegate {
+                btnAddData.Enabled = btnShow.Enabled = true;
                 room = edit.Text;
                 Toast.MakeText(this, string.Format("入力:{0}", room), ToastLength.Short).Show();
             };
             btnDelete.Click += delegate {
                 db.deleteData(pathToDatabase);
-                Toast.MakeText(this, "DELETEしました。", ToastLength.Short).Show();
+                Toast.MakeText(this, "テーブルをDELETEしました。", ToastLength.Short).Show();
                 btnAddData.Enabled = btnShow.Enabled = false;
-            };
-            btnCreate.Click += delegate {
-                var result = db.createDatabase();
-                Toast.MakeText(this, result + " TO: " + pathToDatabase + "\n", ToastLength.Long).Show();
-                //データベースに接続できたら、シングルとリストのボタンを有効に
-                if (result == "Database created") {
-                    btnAddData.Enabled = btnShow.Enabled = true;
-                }
             };
             btnAddData.Click += delegate {
                 db.insertScanResult(results, edit.Text);
                 Toast.MakeText(this, string.Format("{0}件追加しました。\n", results.Count), ToastLength.Short).Show();
             };
             btnShow.Click += delegate {
-                var colums = 0;
-                var txtView = FindViewById<TextView>(Resource.Id.IventText);
-                var wifi_tb = db.getTable(ref colums);
-                txtView.Text = string.Format("DBから{0}件のデータを取得しました。\n",colums);
-                var listView = new ListView(this);
-                
-                foreach (var item in wifi_tb) {
-                    Console.WriteLine(item.ToString());
-                }
-                
+                //TableActivityへ移動
+                var intent = new Intent(this, typeof(TableActivity));
+                var bundle = new Bundle();
+                intent.PutExtra("path", pathToDatabase);
+                StartActivity(intent);
             };
-
-        } // OnCreate()
-
+        } //onResume()
+        
         private IList<ScanResult> getWifi() {
             //wifi情報を取得
             var wifi = (WifiManager)GetSystemService(WifiService);
             //アクセスポイントのスキャン
+            
             var sr = wifi.ScanResults;
             sortScanResult(sr);
             return sr;
         }
 
-        /// <summary>
-        /// 要素を入れ替えます。
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="indexA">入れ替える添え字</param>
-        /// <param name="indexB">入れ替える添え字</param>
         private void swap(System.Collections.Generic.IList<ScanResult> list, int indexA, int indexB) {
             ScanResult temp = list[indexA];
             list[indexA] = list[indexB];

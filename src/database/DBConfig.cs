@@ -21,7 +21,6 @@ namespace GetWifi.src.database {
 
         public string createDatabase() {
             try {
-                //connection = new SQLiteConnection(path);
                 connection.CreateTable<Wifi_tb>();
                 return "Database created";
             }
@@ -41,7 +40,6 @@ namespace GetWifi.src.database {
                     Capabilities    =   sr.Capabilities,
                     Frequency       =   sr.Frequency,
                     Level           =   sr.Level,
-                    
                 });
             }
             try {

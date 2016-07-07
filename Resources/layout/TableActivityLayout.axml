@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tb_TextView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="1dp" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:id="@+id/tb_tableLayout">
+            <TableRow
+                android:id="@+id/tableRow">
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext1"
+                    android:background="@drawable/tb_stroke1"
+                    android:text="ID" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext2"
+                    android:background="@drawable/tb_stroke2"
+                    android:text="計測場所" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext3"
+                    android:background="@drawable/tb_stroke1"
+                    android:text="SSID" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext4"
+                    android:background="@drawable/tb_stroke2"
+                    android:text="BSSID" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext5"
+                    android:background="@drawable/tb_stroke1"
+                    android:text="Level(dBm)" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext6"
+                    android:background="@drawable/tb_stroke2"
+                    android:text="frequency(Hz)" />
+                <TextView
+                    style="@style/tb_style"
+                    android:id="@+id/rowtext7"
+                    android:background="@drawable/tb_stroke1"
+                    android:text="capability" />
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#111" />
+        </TableLayout>
+    </HorizontalScrollView>
+    <Button
+        android:id="@+id/tb_btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:text="BACK" />
+</LinearLayout>
