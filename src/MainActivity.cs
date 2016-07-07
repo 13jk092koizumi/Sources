@@ -18,7 +18,7 @@ namespace GetWifi.src {
     public class MainActivity : Activity {
 
         private database.DBConfig db;
-        private string pathToDatabace;
+        private string pathToDatabase;
         private string room;
 
         protected override void OnCreate(Bundle bundle) {
@@ -34,8 +34,7 @@ namespace GetWifi.src {
             var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
             var apNum = "APを" + results.Count + "件見つけました。";
             txtView1.Text = apNum;
-            sortScanResult(results); //電波強度で昇順ソート
-
+            
             for (int i = 0; i < results.Count; ++i) {
                 // LayoutInflatorの取得
                 var tb_row = LayoutInflater.Inflate(Resource.Layout.tb_layout, null);
@@ -64,11 +63,11 @@ namespace GetWifi.src {
             var btnShow = FindViewById<Button>(Resource.Id.btnShowTable);
             var btnDelete = FindViewById<Button>(Resource.Id.btnDelete);
 
-            //DB作成
-            db = new database.DBConfig();
             //パスの作成
             var docsFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            pathToDatabace = System.IO.Path.Combine(docsFolder, "db_sqlnet.db");
+            pathToDatabase = System.IO.Path.Combine(docsFolder, "db_sqlnet.db");
+            //DB作成
+            db = new database.DBConfig(pathToDatabase);
             btnAddData.Enabled = btnShow.Enabled = false;
             //イベント作成
             btnInput.Click += delegate {
@@ -76,72 +75,44 @@ namespace GetWifi.src {
                 Toast.MakeText(this, string.Format("入力:{0}", room), ToastLength.Short).Show();
             };
             btnDelete.Click += delegate {
-                db.deleteData(pathToDatabace);
+                db.deleteData(pathToDatabase);
                 Toast.MakeText(this, "DELETEしました。", ToastLength.Short).Show();
                 btnAddData.Enabled = btnShow.Enabled = false;
             };
             btnCreate.Click += delegate {
-                var result = db.createDatabase(pathToDatabace);
-                Toast.MakeText(this, result + " TO: " + pathToDatabace + "\n", ToastLength.Long).Show();
+                var result = db.createDatabase();
+                Toast.MakeText(this, result + " TO: " + pathToDatabase + "\n", ToastLength.Long).Show();
                 //データベースに接続できたら、シングルとリストのボタンを有効に
                 if (result == "Database created") {
                     btnAddData.Enabled = btnShow.Enabled = true;
                 }
             };
             btnAddData.Click += delegate {
-                var rn_tb = new List<RN_tb>();
-                var wifi_tb = new List<WifiState_tb>();
-
-                createDataList(ref rn_tb, ref wifi_tb, results);
-
-                var result = db.insertUpdateAllData(rn_tb, wifi_tb, pathToDatabace);
-                Toast.MakeText(this,string.Format("{0}件追加しました。\n", results.Count), ToastLength.Short).Show();
+                db.insertScanResult(results, edit.Text);
+                Toast.MakeText(this, string.Format("{0}件追加しました。\n", results.Count), ToastLength.Short).Show();
             };
             btnShow.Click += delegate {
                 var colums = 0;
-                //var query = "SELECT*FROM RN_tb";
-                //var result = db.getTable(pathToDatabace, query, ref colums);
                 var txtView = FindViewById<TextView>(Resource.Id.IventText);
-                //txtView.Text = string.Format("DBから{0}件のデータを取得しました。\n",colums);
-                var res = db.getTable(pathToDatabace, null, ref colums);
-                foreach (var r in res) {
-                    Console.WriteLine(string.Format("[{0}]\n", r.ToString()));
-                    foreach (var rc in r) {
-                        Console.WriteLine(string.Format("[{0}]\n", rc));
-                    }
+                var wifi_tb = db.getTable(ref colums);
+                txtView.Text = string.Format("DBから{0}件のデータを取得しました。\n",colums);
+                var listView = new ListView(this);
+                
+                foreach (var item in wifi_tb) {
+                    Console.WriteLine(item.ToString());
                 }
+                
             };
 
         } // OnCreate()
 
-        /// <summary>
-        /// StartScan()でAPを取得
-        /// </summary>
-        /// <returns></returns>
         private IList<ScanResult> getWifi() {
             //wifi情報を取得
             var wifi = (WifiManager)GetSystemService(WifiService);
             //アクセスポイントのスキャン
-            wifi.StartScan();
-            return wifi.ScanResults;
-        }
-
-
-        /// <summary>
-        /// DBへ格納するデータの整理
-        /// </summary>
-        private void createDataList(ref List<RN_tb> rn_tb, ref List<WifiState_tb> wifi_tb, System.Collections.Generic.IList<ScanResult> list) {
-            rn_tb.Add(new RN_tb { Room = room });
-            for (int i = 0; i < list.Count; ++i) {
-                wifi_tb.Add(new WifiState_tb {
-                    SSID = list[i].Ssid,
-                    BSSID = list[i].Bssid,
-                    Capabilities = list[i].Capabilities,
-                    Level = list[i].Level,
-                    Frequency = list[i].Frequency,
-                });
-            }
-
+            var sr = wifi.ScanResults;
+            sortScanResult(sr);
+            return sr;
         }
 
         /// <summary>

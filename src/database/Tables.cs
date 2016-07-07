@@ -1,29 +1,19 @@
-﻿using System.Collections.Generic;
-using SQLite;
+﻿using SQLite;
 
-namespace GetWifi {
-    public class RN_tb {
+namespace GetWifi.src.database {
+    public class Wifi_tb {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
         public string Room { get; set; }
-
-        public override string ToString() {
-            return string.Format("[RN_tb: ID={0},Room={1}]\n", ID, Room);
-        }
-    } //class RN_tb
-
-    public class WifiState_tb {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
+        public string SSID { get; set; }
         public string BSSID { get; set; }
         public string Capabilities { get; set; }
         public int Frequency { get; set; }
         public int Level { get; set; }
-        public string SSID { get; set; }
 
         public override string ToString() {
-            return string.Format("[WifiState_tb: ID={0}, BSSID={1},Capabilities={2},Frequency={3},Level={4},SSID={5}]\n",
-                                                ID, BSSID, Capabilities, Frequency, Level, SSID);
+            return string.Format("\n[{0}: Room={1},SSID={2},BSSID={3},Capabilities={4},Frequency={5},Level={6}]",ID,Room,SSID,BSSID,Capabilities,Frequency,Level);
         }
-    } //class Tables
+    }
+
 } //namespace GetWifi
