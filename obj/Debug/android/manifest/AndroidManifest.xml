@@ -4,9 +4,11 @@
   <uses-sdk android:minSdkVersion="14" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <application android:label="GetWifi" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
+    <activity android:label="OpenAppActivity" android:name="md5b33c39e1feeb457f8814806d80f2b84a.OpenAppActivity" />
     <activity android:name="md5b33c39e1feeb457f8814806d80f2b84a.TableActivity" />
     <activity android:icon="@drawable/icon" android:label="GetWifi" android:name="md5b33c39e1feeb457f8814806d80f2b84a.MainActivity">
       <intent-filter>
@@ -14,6 +16,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <receiver android:name="md5b33c39e1feeb457f8814806d80f2b84a.WifiReceiver" />
     <provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="2147483647" android:authorities="GetWifi.GetWifi.mono.MonoRuntimeProvider.__mono_init__" />
     <!--suppress ExportedReceiver-->
     <receiver android:name="mono.android.Seppuku">

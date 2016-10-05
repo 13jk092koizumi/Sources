@@ -39,17 +39,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnAddData" />
             <Button
-                android:text="ShowDB"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnShowTable" />
-            <Button
                 android:text="DELETE"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnDelete" />
+            <Button
+                android:text="DATA LIST"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/btnDelete" />
+                android:id="@+id/btnShowTable" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -107,8 +107,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/IventText"
-                android:text="ボタンのイベント:\n" />
+                android:id="@+id/EventText"
+                android:text="スキャン状況:\n" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

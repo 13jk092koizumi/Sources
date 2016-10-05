@@ -42,17 +42,12 @@
                     style="@style/tb_style"
                     android:id="@+id/rowtext5"
                     android:background="@drawable/tb_stroke1"
-                    android:text="Level(dBm)" />
-                <TextView
-                    style="@style/tb_style"
-                    android:id="@+id/rowtext6"
-                    android:background="@drawable/tb_stroke2"
-                    android:text="frequency(Hz)" />
-                <TextView
-                    style="@style/tb_style"
-                    android:id="@+id/rowtext7"
-                    android:background="@drawable/tb_stroke1"
-                    android:text="capability" />
+                    android:text="Average Level(dBm)" />
+              <TextView
+                  style="@style/tb_style"
+                  android:id="@+id/rowtext6"
+                  android:background="@drawable/tb_stroke2"
+                  android:text="分散" />
             </TableRow>
             <View
                 android:layout_width="match_parent"

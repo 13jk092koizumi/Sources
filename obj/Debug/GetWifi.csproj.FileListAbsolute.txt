@@ -42,3 +42,6 @@ C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\S
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Xml.Linq.dll.mdb
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\res\layout\tableactivitylayout.xml
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\res\layout\tb_layout2.xml
+C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\res\layout\firstmenu.xml
+C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\GetWifi.dll.mdb
+C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\bin\Debug\GetWifi.dll.mdb

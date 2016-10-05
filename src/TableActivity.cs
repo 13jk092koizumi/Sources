@@ -33,27 +33,26 @@ namespace GetWifi.src {
             var colums = 0;
             var txtView = FindViewById<TextView>(Resource.Id.tb_TextView1);
             var tb_layout = FindViewById<TableLayout>(Resource.Id.tb_tableLayout);
-            var wifi_tb = db.getTable(ref colums);
+            var ap_tb = db.getAccessPoints(ref colums);
             txtView.Text = string.Format("DBから{0}件のデータを取得しました.", colums);
-            foreach(var wifi in wifi_tb) {
+            foreach(var ap in ap_tb) {
                 //Inflatorでレイアウトを追加
                 var tb_row = LayoutInflater.Inflate(Resource.Layout.tb_layout2, null);
 
-                var id      =   tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
-                var room    =   tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
-                var ssid    =   tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
-                var bssid   =   tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
-                var level   =   tb_row.FindViewById<TextView>(Resource.Id.rowtext5);
-                var freq    =   tb_row.FindViewById<TextView>(Resource.Id.rowtext6);
-                var capable =   tb_row.FindViewById<TextView>(Resource.Id.rowtext7);
+                var id          =   tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
+                var room        =   tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
+                var ssid        =   tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
+                var bssid       =   tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
+                var level       =   tb_row.FindViewById<TextView>(Resource.Id.rowtext5);
+                var dispersion  =   tb_row.FindViewById<TextView>(Resource.Id.rowtext6);
+                
 
-                id.Text      =    wifi.ID.ToString();
-                room.Text    =    wifi.Room;
-                ssid.Text    =    wifi.SSID;
-                bssid.Text   =    wifi.BSSID;
-                level.Text   =    wifi.Level.ToString();
-                freq.Text    =    wifi.Frequency.ToString();
-                capable.Text =    wifi.Capabilities;
+                id.Text             =    ap.ID.ToString();
+                room.Text           =    ap.Room;
+                ssid.Text           =    ap.SSID;
+                bssid.Text          =    ap.BSSID;
+                level.Text          =    ap.Level.ToString();
+                dispersion.Text     =    ap.Dispersion.ToString();
 
                 tb_layout.AddView(tb_row);
             }

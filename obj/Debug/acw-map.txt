@@ -1,3 +1,7 @@
+GetWifi.src.OpenAppActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.OpenAppActivity
+GetWifi.src.OpenAppActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.OpenAppActivity
+GetWifi.src.OpenAppActivity;md5b33c39e1feeb457f8814806d80f2b84a.OpenAppActivity
+getwifi.src.OpenAppActivity;md5b33c39e1feeb457f8814806d80f2b84a.OpenAppActivity
 GetWifi.src.TableActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
 GetWifi.src.TableActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
 GetWifi.src.TableActivity;md5b33c39e1feeb457f8814806d80f2b84a.TableActivity
@@ -6,3 +10,7 @@ GetWifi.src.MainActivity, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.MainActivi
 GetWifi.src.MainActivity, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
 GetWifi.src.MainActivity;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
 getwifi.src.MainActivity;md5b33c39e1feeb457f8814806d80f2b84a.MainActivity
+GetWifi.src.WifiReceiver, GetWifi;md5b33c39e1feeb457f8814806d80f2b84a.WifiReceiver
+GetWifi.src.WifiReceiver, GetWifi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b33c39e1feeb457f8814806d80f2b84a.WifiReceiver
+GetWifi.src.WifiReceiver;md5b33c39e1feeb457f8814806d80f2b84a.WifiReceiver
+getwifi.src.WifiReceiver;md5b33c39e1feeb457f8814806d80f2b84a.WifiReceiver

@@ -17,6 +17,6 @@ C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\S
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Runtime.InteropServices.dll
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Runtime.Extensions.dll
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Reflection.Extensions.dll
+C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Net.Http.dll
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Runtime.Serialization.dll
 C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.ServiceModel.Internals.dll
-C:\Users\koizumi0816\Documents\卒研\Sotuken\GetWifi\obj\Debug\android\assets\System.Net.Http.dll
