@@ -604,9 +604,6 @@ namespace GetWifi
 			// aapt resource value: 0x7f070017
 			public const int rowtext6 = 2131165207;
 			
-			// aapt resource value: 0x7f070019
-			public const int rowtext7 = 2131165209;
-			
 			// aapt resource value: 0x7f07000d
 			public const int tableLayout = 2131165197;
 			
