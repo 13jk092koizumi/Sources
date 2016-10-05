@@ -41,10 +41,4 @@
       android:background="@drawable/tb_stroke2"
       android:text="0"/>
 
-  <TextView
-      style="@style/tb_style"
-      android:id="@+id/rowtext7"
-      android:background="@drawable/tb_stroke1"
-      android:text="0"/>
-
 </TableRow>
