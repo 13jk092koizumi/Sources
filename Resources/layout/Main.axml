@@ -7,6 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/LLayout">
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textView1"
+            android:text=""
+            android:textColor="#fff" />
         <LinearLayout
             android:id="@+id/inputTxtLL"
             android:layout_width="match_parent"
@@ -60,13 +67,6 @@
             android:id="@+id/linearLayout2"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView1"
-                android:text="---"
-                android:textColor="#fff" />
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -92,11 +92,6 @@
                             android:id="@+id/rowtext3"
                             android:background="@drawable/tb_stroke1"
                             android:text="Level(dBm)" />
-                        <TextView
-                            style="@style/tb_style"
-                            android:id="@+id/rowtext4"
-                            android:background="@drawable/tb_stroke2"
-                            android:text="frequency(Hz)" />
                     </TableRow>
                     <View
                         android:layout_width="match_parent"
@@ -107,8 +102,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/EventText"
-                android:text="スキャン状況:\n" />
+                android:id="@+id/EventText" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

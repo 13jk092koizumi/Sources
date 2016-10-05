@@ -35,24 +35,24 @@ namespace GetWifi.src {
         protected override void OnResume() {
             base.OnResume();
             var tbLayout = FindViewById<TableLayout>(Resource.Id.tableLayout);
-            //results = wifi.ScanResults;
-            //// 結果を表示
-            //var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
-            
-            //foreach (var res in results) {
-            //    var tb_row = LayoutInflater.Inflate(Resource.Layout.tb_layout, null);
+            results = wifi.ScanResults;
+            // 結果を表示
+            var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
+            txtView1.Text = "APを" + results.Count.ToString() + "件発見しました";
 
-            //    var ssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
-            //    var bssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
-            //    var level = tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
-            //    var frequency = tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
-            //    ssid.Text = res.Ssid;
-            //    bssid.Text = res.Bssid;
-            //    level.Text = res.Level.ToString();
-            //    frequency.Text = res.Frequency.ToString();
+            foreach (var res in results) {
+                var tb_row = LayoutInflater.Inflate(Resource.Layout.tb_layout, null);
 
-            //    tbLayout.AddView(tb_row);
-            //}
+                var ssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext1);
+                var bssid = tb_row.FindViewById<TextView>(Resource.Id.rowtext2);
+                var level = tb_row.FindViewById<TextView>(Resource.Id.rowtext3);
+                
+                ssid.Text = res.Ssid;
+                bssid.Text = res.Bssid;
+                level.Text = res.Level.ToString();
+                
+                tbLayout.AddView(tb_row);
+            }
 
             var edit = FindViewById<EditText>(Resource.Id.input_editTxt);
             var btnInput = FindViewById<Button>(Resource.Id.btnInput);
