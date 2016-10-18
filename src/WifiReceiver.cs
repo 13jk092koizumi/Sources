@@ -21,7 +21,7 @@ namespace GetWifi.src {
         IList<ScanResult> mResults;  //ScanResult List
         ProgressDialog mProgDialog;
         string mPlaceName;           //scaned place name
-        const int mLoopMax = 10;     //how many scan
+        const int mLoopMax = 200;     //how many scan
         int mLoopCount;
         public WifiReceiver() { }
 
@@ -29,12 +29,12 @@ namespace GetWifi.src {
             mWifiMng = wifi_manager;
             mPlaceName = place;
             //プログレスダイアログの初期化
-            mProgDialog = new ProgressDialog(MainActivity.Instance);
+            mProgDialog = new ProgressDialog(MainActivity.mInstance);
             mProgDialog.SetMessage("スキャン中");
             mProgDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
             mProgDialog.Max = mLoopMax;
             mLoopCount = 1;
-            var eventTxt = MainActivity.Instance.FindViewById<TextView>(Resource.Id.EventText);
+            var eventTxt = MainActivity.mInstance.FindViewById<TextView>(Resource.Id.EventText);
             eventTxt.Text = "";
         }
 
@@ -64,7 +64,7 @@ namespace GetWifi.src {
                 if (mLoopCount <= mLoopMax) {
                     mWifiMng.StartScan();
                 } else {
-                    var builder = new AlertDialog.Builder(MainActivity.Instance);
+                    var builder = new AlertDialog.Builder(MainActivity.mInstance);
                     builder.SetMessage("スキャンが終了しました");
                     var dialog = builder.Create();
                     dialog.Show();

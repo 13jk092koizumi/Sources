@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\OpenAppActivity.cs" />
+    <Compile Include="src\AsyncProgressDialogActivity.cs" />
     <Compile Include="src\TableActivity.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
@@ -68,7 +68,7 @@
     <AndroidResource Include="Resources\layout\TableActivityLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\FirstMenu.axml">
+    <AndroidResource Include="Resources\layout\ProgressDialogLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -111,6 +111,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\tb_layout2.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ArrayAdapterLayout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

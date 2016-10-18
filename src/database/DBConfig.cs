@@ -132,6 +132,16 @@ namespace GetWifi.src.database {
             }
         } //findNumberRecords()
 
+        public TableQuery<AccessPoint> getAccessPoints() {
+            try {
+                var table = connection.Table<AccessPoint>();
+                return table;
+            }catch(SQLiteException ex) {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
         public TableQuery<AccessPoint> getAccessPoints(ref int colums) {
             try {
                 var table = connection.Table<AccessPoint>();
@@ -153,6 +163,5 @@ namespace GetWifi.src.database {
                 throw;
             }
         } //getScanData
-
     }
 }
