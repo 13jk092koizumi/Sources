@@ -76,6 +76,10 @@ namespace GetWifi.src {
             //イベント作成
             btnInput.Click += delegate {
                 mPlaceName = autoCompTxtView.Text;
+                if (mPlaceName.Length == 0) {
+                    Toast.MakeText(this, "注意:計測場所を入力しないとスキャンできません", ToastLength.Long).Show();
+                    return;
+                }
                 Toast.MakeText(this, string.Format("入力:{0}", mPlaceName), ToastLength.Short).Show();
                 //DB内に同じ計測場所があったら上書きするか選ばせる。(TODO:AlertDialogでできるのでは？)
                 // スキャン開始

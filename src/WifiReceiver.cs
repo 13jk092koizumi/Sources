@@ -1,5 +1,5 @@
 using System;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Android.App;
@@ -20,14 +20,16 @@ namespace GetWifi.src {
         WifiManager mWifiMng;        //wifiManager
         IList<ScanResult> mResults;  //ScanResult List
         ProgressDialog mProgDialog;
+        DateTime mDate;
         string mPlaceName;           //scaned place name
-        const int mLoopMax = 200;     //how many scan
+        const int mLoopMax = 20;     //how many scan
         int mLoopCount;
         public WifiReceiver() { }
 
         public WifiReceiver(WifiManager wifi_manager, string place) {
             mWifiMng = wifi_manager;
             mPlaceName = place;
+            mDate = DateTime.Now;
             //プログレスダイアログの初期化
             mProgDialog = new ProgressDialog(MainActivity.mInstance);
             mProgDialog.SetMessage("スキャン中");
@@ -38,7 +40,7 @@ namespace GetWifi.src {
             eventTxt.Text = "";
         }
 
-        public override void OnReceive(Context context, Intent intent) {
+        public async override void OnReceive(Context context, Intent intent) {
             if (mLoopCount == 1) {
                 mProgDialog.Show();
             }
@@ -58,7 +60,8 @@ namespace GetWifi.src {
                 foreach (var sr in mResults) {
                     ++index;
                 }
-                db.insertScanData(mResults);//DBにいったん保存
+                db.insertScanData(mResults,mDate);//DBにいったん保存
+                await updateProgress();
                 mProgDialog.Progress = mLoopCount;
                 ++mLoopCount;
                 if (mLoopCount <= mLoopMax) {
@@ -103,5 +106,19 @@ namespace GetWifi.src {
             }
             return list;
         } // sortScanResult()
+
+        private async Task updateProgress() {
+            await Task.Run(() => calcWaitTime());
+            string message = string.Format("スキャン中　残り{0}秒", calcWaitTime());
+            mProgDialog.SetMessage(message);
+            System.Threading.Thread.Sleep(300);
+        }
+
+        private int calcWaitTime() {
+            var nowTime = DateTime.Now;
+            var ts = nowTime - mDate;
+            double waitTime = (ts.TotalSeconds / mLoopCount) * (mLoopMax - mLoopCount);
+            return (int)waitTime;
+        } //calcWaitTime()
     }
 }
