@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Android.Net.Wifi;
 using Android.OS;
@@ -52,6 +53,7 @@ namespace GetWifi.src {
 
             var autoCompTxtView = FindViewById<AutoCompleteTextView>(Resource.Id.auto_comprete_text_view1);
             var btnInput = FindViewById<Button>(Resource.Id.btnInput);
+            btnInput.FocusableInTouchMode = true;
             var btnShow = FindViewById<Button>(Resource.Id.btnShowTable);
             var btnDelete = FindViewById<Button>(Resource.Id.btnDelete);
             //入力候補の表示
@@ -72,7 +74,18 @@ namespace GetWifi.src {
             }
             adapter.AddAll(tempList);
             autoCompTxtView.Adapter = adapter;
-            
+            //キーボードのエンターキー検知
+            autoCompTxtView.KeyPress += (object sender,View.KeyEventArgs e)=> {
+                e.Handled = false;
+                if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter) {
+                    var methodManager = (InputMethodManager)GetSystemService(InputMethodService);
+                    var currentFocus = Window.CurrentFocus;
+                    if (currentFocus != null) {
+                        methodManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+                    }
+                }
+                btnInput.RequestFocus(); //スキャンボタンにいフォーカスを移動
+            };
             //イベント作成
             btnInput.Click += delegate {
                 mPlaceName = autoCompTxtView.Text;

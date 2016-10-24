@@ -60,7 +60,7 @@ namespace GetWifi.src {
                 foreach (var sr in mResults) {
                     ++index;
                 }
-                db.insertScanData(mResults,mDate);//DBÇ…Ç¢Ç¡ÇΩÇÒï€ë∂
+                db.insertScanData(mResults, mDate);//DBÇ…Ç¢Ç¡ÇΩÇÒï€ë∂
                 await updateProgress();
                 mProgDialog.Progress = mLoopCount;
                 ++mLoopCount;
@@ -73,7 +73,7 @@ namespace GetWifi.src {
                     dialog.Show();
                     mProgDialog.Dismiss();
                     //ÉfÅ[É^ÇÃí«â¡                    
-                    db.insertAccessPoints(mResults, mPlaceName);
+                    db.insertAccessPoints(mResults, mPlaceName,mDate);
                         
                     context.UnregisterReceiver(this);
                 }

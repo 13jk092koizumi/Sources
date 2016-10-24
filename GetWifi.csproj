@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AsyncProgressDialogActivity.cs" />
+    <Compile Include="src\FragmentTestActivity.cs" />
     <Compile Include="src\TableActivity.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
@@ -69,6 +70,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ProgressDialogLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FragmentTest.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

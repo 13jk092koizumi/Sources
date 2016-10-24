@@ -31,13 +31,13 @@ namespace GetWifi.src.database {
             }
         }
 
-        public void insertAccessPoints(IList<Android.Net.Wifi.ScanResult> scanResult, string placeName) {
+        public void insertAccessPoints(IList<Android.Net.Wifi.ScanResult> scanResult, string placeName, DateTime nowTime) {
             var wList = new List<AccessPoint>();
             int average = 0;
             int dispersion = 0;
             try {
                 for (int i = 0; i < scanResult.Count && i < ListSizeMax; ++i) {
-                    var scanDataTable = connection.Query<ScanData>("select * from ScanData where BSSID == ?", scanResult[i].Bssid);
+                    var scanDataTable = connection.Query<ScanData>("select * from ScanData where BSSID == ? and Date == ?", scanResult[i].Bssid, nowTime);
                     average = 0;
                     dispersion = 0;
                     int count = scanDataTable.Count;
@@ -54,7 +54,8 @@ namespace GetWifi.src.database {
                                 ap_item.Dispersion = dispersion;
                                 ap_item.Date = scanDataTable[0].Date;
                             }
-                            //Console.WriteLine("UPDATE {0} Colums", connection.Update(ap_item));
+                            connection.Update(ap_item);
+                            //Console.WriteLine("Date is {0}", scanDataTable[0].Date.ToString());
                         }
                     } else {
                         wList.Add(new AccessPoint {
@@ -84,10 +85,10 @@ namespace GetWifi.src.database {
                     list.Add(new ScanData {
                         BSSID = scanResult[i].Bssid,
                         Level = scanResult[i].Level,
-                        Date = date
+                        Date = date,
                     });
                 }
-                //foreach (var item in list) { Console.WriteLine(string.Format("{0}:{1}",item.ID,item.BSSID)); }
+                //foreach (var item in list) { Console.WriteLine(string.Format("{0}:{1},{2}",item.ID,item.BSSID,item.Date)); }
                 connection.InsertAll(list);
             }
             catch (SQLiteException ex) {

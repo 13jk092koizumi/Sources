@@ -45,6 +45,8 @@ namespace GetWifi.src {
                 var bssid       =   tb_row.FindViewById<TextView>(Resource.Id.rowtext4);
                 var level       =   tb_row.FindViewById<TextView>(Resource.Id.rowtext5);
                 var dispersion  =   tb_row.FindViewById<TextView>(Resource.Id.rowtext6);
+                var date        =   tb_row.FindViewById<TextView>(Resource.Id.rowtext7);
+                var scanCount     =   tb_row.FindViewById<TextView>(Resource.Id.rowtext8);
                 
 
                 id.Text             =    ap.ID.ToString();
@@ -53,6 +55,8 @@ namespace GetWifi.src {
                 bssid.Text          =    ap.BSSID;
                 level.Text          =    ap.Level.ToString();
                 dispersion.Text     =    ap.Dispersion.ToString();
+                date.Text           =    ap.Date.ToString();
+                scanCount.Text      =    ap.ScanCount.ToString();
 
                 tb_layout.AddView(tb_row);
             }
