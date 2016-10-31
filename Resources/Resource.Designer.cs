@@ -547,8 +547,8 @@ namespace GetWifi
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070011
-			public const int EventText = 2131165201;
+			// aapt resource value: 0x7f070012
+			public const int EventText = 2131165202;
 			
 			// aapt resource value: 0x7f070003
 			public const int LLayout = 2131165187;
@@ -561,6 +561,9 @@ namespace GetWifi
 			
 			// aapt resource value: 0x7f070007
 			public const int btnInput = 2131165191;
+			
+			// aapt resource value: 0x7f07000b
+			public const int btnSaveFile = 2131165195;
 			
 			// aapt resource value: 0x7f07000a
 			public const int btnShowTable = 2131165194;
@@ -577,53 +580,53 @@ namespace GetWifi
 			// aapt resource value: 0x7f070008
 			public const int linearLayout1 = 2131165192;
 			
-			// aapt resource value: 0x7f07000b
-			public const int linearLayout2 = 2131165195;
+			// aapt resource value: 0x7f07000c
+			public const int linearLayout2 = 2131165196;
 			
 			// aapt resource value: 0x7f070000
 			public const int new_fragments = 2131165184;
 			
-			// aapt resource value: 0x7f07000e
-			public const int rowtext1 = 2131165198;
-			
 			// aapt resource value: 0x7f07000f
-			public const int rowtext2 = 2131165199;
+			public const int rowtext1 = 2131165199;
 			
 			// aapt resource value: 0x7f070010
-			public const int rowtext3 = 2131165200;
+			public const int rowtext2 = 2131165200;
 			
-			// aapt resource value: 0x7f070015
-			public const int rowtext4 = 2131165205;
+			// aapt resource value: 0x7f070011
+			public const int rowtext3 = 2131165201;
 			
 			// aapt resource value: 0x7f070016
-			public const int rowtext5 = 2131165206;
+			public const int rowtext4 = 2131165206;
 			
 			// aapt resource value: 0x7f070017
-			public const int rowtext6 = 2131165207;
+			public const int rowtext5 = 2131165207;
 			
 			// aapt resource value: 0x7f070018
-			public const int rowtext7 = 2131165208;
+			public const int rowtext6 = 2131165208;
 			
 			// aapt resource value: 0x7f070019
-			public const int rowtext8 = 2131165209;
-			
-			// aapt resource value: 0x7f070012
-			public const int scan_button = 2131165202;
-			
-			// aapt resource value: 0x7f07000c
-			public const int tableLayout = 2131165196;
-			
-			// aapt resource value: 0x7f07000d
-			public const int tableRow = 2131165197;
-			
-			// aapt resource value: 0x7f070013
-			public const int tb_TextView1 = 2131165203;
+			public const int rowtext7 = 2131165209;
 			
 			// aapt resource value: 0x7f07001a
-			public const int tb_btnBack = 2131165210;
+			public const int rowtext8 = 2131165210;
+			
+			// aapt resource value: 0x7f070013
+			public const int scan_button = 2131165203;
+			
+			// aapt resource value: 0x7f07000d
+			public const int tableLayout = 2131165197;
+			
+			// aapt resource value: 0x7f07000e
+			public const int tableRow = 2131165198;
 			
 			// aapt resource value: 0x7f070014
-			public const int tb_tableLayout = 2131165204;
+			public const int tb_TextView1 = 2131165204;
+			
+			// aapt resource value: 0x7f07001b
+			public const int tb_btnBack = 2131165211;
+			
+			// aapt resource value: 0x7f070015
+			public const int tb_tableLayout = 2131165205;
 			
 			// aapt resource value: 0x7f070004
 			public const int textView1 = 2131165188;

@@ -22,7 +22,7 @@ namespace GetWifi.src {
         ProgressDialog mProgDialog;
         DateTime mDate;
         string mPlaceName;           //scaned place name
-        const int mLoopMax = 20;     //how many scan
+        const int mLoopMax = 200;     //how many scan
         int mLoopCount;
         public WifiReceiver() { }
 

@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Android.App;
@@ -52,10 +52,12 @@ namespace GetWifi.src {
             }
 
             var autoCompTxtView = FindViewById<AutoCompleteTextView>(Resource.Id.auto_comprete_text_view1);
-            var btnInput = FindViewById<Button>(Resource.Id.btnInput);
+            var btnInput = FindViewById<Button>(Resource.Id.btnInput); //スキャン開始ボタン
             btnInput.FocusableInTouchMode = true;
-            var btnShow = FindViewById<Button>(Resource.Id.btnShowTable);
-            var btnDelete = FindViewById<Button>(Resource.Id.btnDelete);
+            var btnShow = FindViewById<Button>(Resource.Id.btnShowTable); //DATA LISTボタン
+            var btnDelete = FindViewById<Button>(Resource.Id.btnDelete); //DELETEボタン
+            var btnSave = FindViewById<Button>(Resource.Id.btnSaveFile); //SAVE FILEボタン
+
             //入力候補の表示
             var places = mDb.getAccessPoints();
             var adapter = new ArrayAdapter<string>(this, Resource.Layout.ArrayAdapterLayout);
@@ -84,10 +86,11 @@ namespace GetWifi.src {
                         methodManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
                     }
                 }
-                btnInput.RequestFocus(); //スキャンボタンにいフォーカスを移動
+                btnInput.RequestFocus(); //スキャンボタンにフォーカスを移動
             };
             //イベント作成
-            btnInput.Click += delegate {
+            btnInput.Click += async delegate {
+                btnInput.Enabled = false; //連打防止のためいったん無効化
                 mPlaceName = autoCompTxtView.Text;
                 if (mPlaceName.Length == 0) {
                     Toast.MakeText(this, "注意:計測場所を入力しないとスキャンできません", ToastLength.Long).Show();
@@ -97,6 +100,8 @@ namespace GetWifi.src {
                 //DB内に同じ計測場所があったら上書きするか選ばせる。(TODO:AlertDialogでできるのでは？)
                 // スキャン開始
                 scanWifi();
+                await Task.Run(()=>System.Threading.Thread.Sleep(1000)); //1秒ボタンを無効化
+                btnInput.Enabled = true; //ボタンを有効に
             };
             btnDelete.Click += delegate {
                 mDb.deleteData();
@@ -107,6 +112,14 @@ namespace GetWifi.src {
                 var intent = new Intent(this, typeof(TableActivity));
                 intent.PutExtra("path", pathToDatabase);
                 StartActivity(intent);
+            };
+            btnSave.Click += delegate {
+                //DBのデータをファイルに出力
+                var save = new SaveFile("/ScanDataLog.csv");
+                save.WriteAll(mDb.createCsv());
+                string result = save.ReadAll();
+                Toast.MakeText(this, string.Format("{0}byte読み込みました",result.Length), ToastLength.Short).Show();
+                //save.Delete();
             };
         } //onResume()
 

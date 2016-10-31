@@ -178,6 +178,17 @@ namespace GetWifi.src.database {
             }
         } //getScanData()
 
+        public List<string> createCsv() {
+            var scanDataList = getScanData();
+            var toList = new List<string>();
+            string field_line = "id,BSSID,LEVEL,Date\n";
+            toList.Add(field_line);
+            foreach (var list_item in scanDataList) {
+                toList.Add(list_item.ToString());
+            }
+            return toList;
+        }
+
         private void calcAveAndDisp(ref int average, ref int dispersion, List<ScanData> scanDataTable, int count) {
             //BSSID‚²‚Æ‚É•½‹Ï‚Æ•ªU‚ğŒvZ‚·‚éB
             foreach (var tb_item in scanDataTable) {

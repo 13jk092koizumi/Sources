@@ -13,7 +13,7 @@ namespace GetWifi.src.database {
         public DateTime Date { get; set; }
         public int ScanCount { get; set; } = 1;
         public override string ToString() {
-            return string.Format("\n[{0}: Room={1},SSID={2},BSSID={3},Level={4},Dispersion={5},Date={6},ScanCount={7}]", ID, Room, SSID, BSSID, Level, Dispersion, Date, ScanCount);
+            return string.Format("{0},{1},{2},{3},{4},{5},{6},{7}\n", ID, Room, SSID, BSSID, Level, Dispersion, Date, ScanCount);
         }
     }
 
@@ -25,7 +25,7 @@ namespace GetWifi.src.database {
         public int Level { get; set; }
         public DateTime Date { get; set; }
         public override string ToString() {
-            return string.Format("\n[{0}: BSSID={1},Level={2},date={3}]", ID, BSSID, Level, Date);
+            return string.Format("{0},{1},{2},{3}", ID, BSSID, Level, Date);
         }
     }
 

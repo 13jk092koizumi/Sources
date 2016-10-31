@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AsyncProgressDialogActivity.cs" />
+    <Compile Include="src\SaveFile.cs" />
     <Compile Include="src\FragmentTestActivity.cs" />
     <Compile Include="src\TableActivity.cs" />
     <Compile Include="SQLite.cs" />
