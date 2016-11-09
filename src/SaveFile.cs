@@ -21,12 +21,24 @@ namespace GetWifi.src {
         public SaveFile(string fileName) {
             var folderPath = Android.OS.Environment.ExternalStorageDirectory;
             mFilePath = folderPath + "/Android/data/GetWifi.GetWifi/files" + fileName; // "/data/ooo.txt"
-            Console.WriteLine(mFilePath);
+            //Console.WriteLine(mFilePath);
+        }
+
+        public SaveFile(string fileName, bool extendNameFlag) {
+            if (extendNameFlag) {
+                int lastIndex = fileName.LastIndexOf('.');
+                string now = DateTime.Now.ToString("yyMMdd");
+                fileName = fileName.Insert(lastIndex, now);
+                Console.WriteLine(fileName);
+            }
+            var folderPath = Android.OS.Environment.ExternalStorageDirectory;
+            mFilePath = folderPath + "/Android/data/GetWifi.GetWifi/files" + fileName; // "/data/ooo.txt"
+            //Console.WriteLine(mFilePath);
         }
 
         public void WriteAll(List<string> contentList) {
             try {
-                Console.WriteLine(Android.OS.Environment.ExternalStorageState);
+                //Console.WriteLine(Android.OS.Environment.ExternalStorageState);
                     using (var sw = new System.IO.StreamWriter(mFilePath)) {
                         foreach (var item in contentList) {
                             sw.WriteLine(item);

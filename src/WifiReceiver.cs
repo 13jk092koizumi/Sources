@@ -20,7 +20,8 @@ namespace GetWifi.src {
         WifiManager mWifiMng;        //wifiManager
         IList<ScanResult> mResults;  //ScanResult List
         ProgressDialog mProgDialog;
-        DateTime mDate;
+        DateTime mDate;              //start scan DateTime
+        DBConfig mDb;                //database
         string mPlaceName;           //scaned place name
         const int mLoopMax = 200;     //how many scan
         int mLoopCount;
@@ -30,9 +31,19 @@ namespace GetWifi.src {
             mWifiMng = wifi_manager;
             mPlaceName = place;
             mDate = DateTime.Now;
+            //DBセット
+            var docsFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            var pathToDB = System.IO.Path.Combine(docsFolder, "db_sqlnet.db");
+            mDb = new DBConfig(pathToDB);
             //プログレスダイアログの初期化
             mProgDialog = new ProgressDialog(MainActivity.mInstance);
+            
             mProgDialog.SetMessage("スキャン中");
+            mProgDialog.SetButton("キャンセル", (s,e)=> {
+                mDb.resetScanData();//中途半端なカラムを削除
+                MainActivity.mInstance.UnregisterReceiver(this); //BroadcastReceiver解除
+                Toast.MakeText(MainActivity.mInstance, "キャンセルしました。", ToastLength.Long).Show();
+            });
             mProgDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
             mProgDialog.Max = mLoopMax;
             mLoopCount = 1;
@@ -52,16 +63,9 @@ namespace GetWifi.src {
 
             mResults = sortScanResult();
             var size = mResults.Count;
-            var docsFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            var pathToDB = System.IO.Path.Combine(docsFolder, "db_sqlnet.db");
-            var db = new DBConfig(pathToDB);
             if (size > 0) {
-                int index = 0;
-                foreach (var sr in mResults) {
-                    ++index;
-                }
-                db.insertScanData(mResults, mDate);//DBにいったん保存
-                await updateProgress();
+                mDb.insertScanData(mResults, mDate);//DBにいったん保存
+                await Task.Run(() => updateProgress());
                 mProgDialog.Progress = mLoopCount;
                 ++mLoopCount;
                 if (mLoopCount <= mLoopMax) {
@@ -70,10 +74,10 @@ namespace GetWifi.src {
                     var builder = new AlertDialog.Builder(MainActivity.mInstance);
                     builder.SetMessage("スキャンが終了しました");
                     var dialog = builder.Create();
-                    dialog.Show();
                     mProgDialog.Dismiss();
+                    dialog.Show();
                     //データの追加                    
-                    db.insertAccessPoints(mResults, mPlaceName,mDate);
+                    mDb.insertAccessPoints(mResults, mPlaceName, mDate);
                         
                     context.UnregisterReceiver(this);
                 }
@@ -107,10 +111,10 @@ namespace GetWifi.src {
             return list;
         } // sortScanResult()
 
-        private async Task updateProgress() {
-            await Task.Run(() => calcWaitTime());
-            string message = string.Format("スキャン中　残り{0}秒", calcWaitTime());
-            mProgDialog.SetMessage(message);
+        private void updateProgress() {
+            int time = calcWaitTime();
+            string message = string.Format("スキャン中　残り{0}秒", time);
+            new Handler(Looper.MainLooper).Post(() => mProgDialog.SetMessage(message));
             System.Threading.Thread.Sleep(300);
         }
 

@@ -9,11 +9,11 @@ namespace GetWifi.src.database {
         public string SSID { get; set; }
         public string BSSID { get; set; }
         public int Level { get; set; }
-        public int Dispersion { get; set; }
+        public int Variation { get; set; }
         public DateTime Date { get; set; }
         public int ScanCount { get; set; } = 1;
         public override string ToString() {
-            return string.Format("{0},{1},{2},{3},{4},{5},{6},{7}\n", ID, Room, SSID, BSSID, Level, Dispersion, Date, ScanCount);
+            return string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", ID, Room, SSID, BSSID, Level, Variation, Date, ScanCount);
         }
     }
 

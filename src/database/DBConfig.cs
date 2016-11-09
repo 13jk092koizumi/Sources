@@ -5,7 +5,7 @@ using SQLite;
 
 namespace GetWifi.src.database {
 
-    class DBConfig {
+    public class DBConfig {
         private SQLiteConnection connection;
         private string path;
         private const int ListSizeMax = 10; //スキャンしたAPの保存上限
@@ -34,15 +34,15 @@ namespace GetWifi.src.database {
         public void insertAccessPoints(IList<Android.Net.Wifi.ScanResult> scanResult, string placeName, DateTime nowTime) {
             var wList = new List<AccessPoint>();
             int average = 0;
-            int dispersion = 0;
+            int variation = 0;
             try {
                 for (int i = 0; i < scanResult.Count && i < ListSizeMax; ++i) {
                     var scanDataTable = connection.Query<ScanData>("select * from ScanData where BSSID == ? and Date == ?", scanResult[i].Bssid, nowTime);
                     average = 0;
-                    dispersion = 0;
+                    variation = 0;
                     int count = scanDataTable.Count;
                     //平均、分散を計算
-                    calcAveAndDisp(ref average, ref dispersion, scanDataTable, count);
+                    calcAveAndDisp(ref average, ref variation, scanDataTable, count);
                     //スキャン済みの計測場所かつDB内に同じBSSIDがあった場合->更新
                     //なかった場合->カラムを作成
                     var apTable = from s in connection.Table<AccessPoint>() where s.Room == placeName select s; //スキャン済みだったら
@@ -51,7 +51,7 @@ namespace GetWifi.src.database {
                             if (ap_item.BSSID == scanResult[i].Bssid) {
                                 ap_item.ScanCount++;
                                 ap_item.Level = average;
-                                ap_item.Dispersion = dispersion;
+                                ap_item.Variation = variation;
                                 ap_item.Date = scanDataTable[0].Date;
                             }
                             connection.Update(ap_item);
@@ -63,7 +63,7 @@ namespace GetWifi.src.database {
                             SSID = scanResult[i].Ssid,
                             BSSID = scanResult[i].Bssid,
                             Level = average,
-                            Dispersion = dispersion,
+                            Variation = variation,
                             Date = scanDataTable[0].Date,
                             ScanCount = 1,
                         });
@@ -121,18 +121,6 @@ namespace GetWifi.src.database {
             }
         } //deleteData
 
-        /// <summary>
-        /// apでAccessPointテーブル、scanでScanDataテーブルを削除
-        /// </summary>
-        /// <param name="tb_name">"ap" or "scan"</param>
-        public void dropTable(string tb_name) {
-            if (tb_name == "ap") {
-                connection.DropTable<AccessPoint>();
-            } else if (tb_name == "scan") {
-                connection.DropTable<ScanData>();
-            } else { Console.WriteLine("\tテーブルを削除できませんでした。\n"); }
-        } //dropTable()
-
         public int findNumberRecords() {
             try {
                 //すべてのレコードをカウントします。 なので遅いです。
@@ -181,15 +169,30 @@ namespace GetWifi.src.database {
         public List<string> createCsv() {
             var scanDataList = getScanData();
             var toList = new List<string>();
-            string field_line = "id,BSSID,LEVEL,Date\n";
+            string field_line = "id,BSSID,LEVEL,Date";
             toList.Add(field_line);
             foreach (var list_item in scanDataList) {
                 toList.Add(list_item.ToString());
             }
             return toList;
+        } //createCsv()
+
+        public string resetScanData() {
+            try {
+                connection.Execute("update sqlite_sequence set seq=0 where name='ScanData'");
+                var scanDataLastColm = connection.Table<ScanData>().OrderByDescending(s => s.ID).FirstOrDefault();
+                var accessPointsLastColum = connection.Table<AccessPoint>().OrderByDescending(s => s.ID).FirstOrDefault();
+                if (scanDataLastColm.Date == accessPointsLastColum.Date) {
+                    return "AccessPointテーブルにあるDateのカラムを参照しているため、削除しませんでした。";
+                }
+                int deletes = connection.Execute("delete from ScanData where Date = ?", scanDataLastColm.Date);
+                return string.Format("{0} colum deleted.", deletes);
+            }catch(SQLiteException e) {
+                return e.Message;
+            }
         }
 
-        private void calcAveAndDisp(ref int average, ref int dispersion, List<ScanData> scanDataTable, int count) {
+        private void calcAveAndDisp(ref int average, ref int variation, List<ScanData> scanDataTable, int count) {
             //BSSIDごとに平均と分散を計算する。
             foreach (var tb_item in scanDataTable) {
                 average += tb_item.Level;
@@ -197,9 +200,9 @@ namespace GetWifi.src.database {
             average /= count; //平均算出
             foreach (var tb_item in scanDataTable) {
                 int element = tb_item.Level - average;
-                dispersion += element * element;
+                variation += element * element;
             }
-            dispersion /= count; //分散算出
+            variation /= count; //分散算出
         }
     }
 }
