@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AsyncProgressDialogActivity.cs" />
+    <Compile Include="src\database\Svm.cs" />
     <Compile Include="src\SaveFile.cs" />
     <Compile Include="src\FragmentTestActivity.cs" />
     <Compile Include="src\TableActivity.cs" />
@@ -123,6 +124,9 @@
     <AndroidResource Include="Resources\layout\ArrayAdapterLayout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\IOFileMenu.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

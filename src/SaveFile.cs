@@ -36,6 +36,18 @@ namespace GetWifi.src {
             //Console.WriteLine(mFilePath);
         }
 
+        public void Write(string content) {
+            try {
+                using(var sw = new System.IO.StreamWriter(mFilePath)) {
+                    sw.Write(content);
+                    sw.Close();
+                }
+            }catch(Exception e) {
+                Console.WriteLine("failed save string line");
+                throw new Exception(e.Message);
+            }
+        }
+
         public void WriteAll(List<string> contentList) {
             try {
                 //Console.WriteLine(Android.OS.Environment.ExternalStorageState);
@@ -43,8 +55,8 @@ namespace GetWifi.src {
                         foreach (var item in contentList) {
                             sw.WriteLine(item);
                         }
+                    sw.Close();
                     }
-                
             }catch(Exception e) {
                 Console.WriteLine(e.Message + " :failed to WRITE file!");
                 throw;

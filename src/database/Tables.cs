@@ -29,4 +29,24 @@ namespace GetWifi.src.database {
         }
     }
 
+    public class BSSIDIndex {
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; } = 1;
+        [Unique]
+        public string BSSID { get; set; }
+        public override string ToString() {
+            return string.Format("{0},{1}", ID, BSSID);
+        }
+    }
+
+    public class RoomIndex {
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; } = 1;
+        [Unique]
+        public string Room { get; set; }
+        public override string ToString() {
+            return string.Format("{0},{1}", ID, Room);
+        }
+    }
+
 } //namespace GetWifi

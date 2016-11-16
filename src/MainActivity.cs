@@ -115,12 +115,23 @@ namespace GetWifi.src {
                 StartActivity(intent);
             };
             btnSave.Click += delegate {
-                //DBのデータをファイルに出力
-                var save = new SaveFile("/ScanDataLog.csv", true);
-                save.WriteAll(mDb.createCsv());
-                string result = save.ReadAll();
-                Toast.MakeText(this, string.Format("{0}byteのファイルを出力しました。",result.Length), ToastLength.Long).Show();
-                //save.Delete();
+                var menu = new PopupMenu(this,btnSave);
+                menu.Inflate(Resource.Menu.IOFileMenu);
+                menu.Show();
+                //メニュー選択時のイベント
+                menu.MenuItemClick += (s,arg) => {
+                    switch (arg.Item.ItemId) {
+                        case Resource.Id.io_file_menu_item01:
+                            outCsvFile();       break;
+                        case Resource.Id.io_file_menu_item02:
+                            outSvmFile();
+                            break;
+                        case Resource.Id.io_file_menu_item03:
+                            mDb.setIndexTable();     break;
+                        default:
+                            menu.Dismiss();     break;
+                    }
+                };
             };
             FindViewById<Button>(Resource.Id.btnReset).Click += delegate {
                 var message = mDb.resetScanData();
@@ -141,6 +152,21 @@ namespace GetWifi.src {
             var wifiRec = new WifiReceiver(mWifi,mPlaceName);
             RegisterReceiver(wifiRec, intentFilter);
             mWifi.StartScan();
+        }
+
+        private void outCsvFile() {
+            //DBのデータをファイルに出力
+            var save = new SaveFile("/ScanDataLog.csv", true);
+            save.WriteAll(mDb.createCsv());
+            string result = save.ReadAll();
+            Toast.MakeText(this, string.Format("{0}byteのファイルを出力しました。",result.Length), ToastLength.Long).Show();
+            //save.Delete();
+        }
+
+        private void outSvmFile() {
+            var svm = new database.Svm();
+            string message = svm.createTrainFile();
+            Toast.MakeText(this, message, ToastLength.Long).Show();
         }
 
     } // class mainactivity

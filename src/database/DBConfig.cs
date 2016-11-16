@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using SQLite;
@@ -20,14 +21,15 @@ namespace GetWifi.src.database {
             connection.Close();
         }
 
-        public string createDatabase() {
+        public void createDatabase() {
             try {
                 connection.CreateTable<AccessPoint>();
                 connection.CreateTable<ScanData>();
-                return "Database created";
+                connection.CreateTable<BSSIDIndex>();
+                connection.CreateTable<RoomIndex>();
             }
             catch (SQLiteException ex) {
-                return ex.Message;
+                throw new Exception("can't create table!\tERROR:"+ex.Message);
             }
         }
 
@@ -42,7 +44,7 @@ namespace GetWifi.src.database {
                     variation = 0;
                     int count = scanDataTable.Count;
                     //ïΩãœÅAï™éUÇåvéZ
-                    calcAveAndDisp(ref average, ref variation, scanDataTable, count);
+                    calcAveAndVar(ref average, ref variation, scanDataTable, count);
                     //ÉXÉLÉÉÉìçœÇ›ÇÃåvë™èÍèäÇ©Ç¬DBì‡Ç…ìØÇ∂BSSIDÇ™Ç†Ç¡ÇΩèÍçá->çXêV
                     //Ç»Ç©Ç¡ÇΩèÍçá->ÉJÉâÉÄÇçÏê¨
                     var apTable = from s in connection.Table<AccessPoint>() where s.Room == placeName select s; //ÉXÉLÉÉÉìçœÇ›ÇæÇ¡ÇΩÇÁ
@@ -97,6 +99,22 @@ namespace GetWifi.src.database {
             }
         } //insertScanData()
 
+        public void insertRoomIndex(string room) {
+            try {
+                connection.Insert(new RoomIndex { Room = room });
+            }catch(SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        } //insertRoomIndex
+
+        public void insertBssidIndex(string bssid) {
+            try {
+                connection.Insert(new BSSIDIndex { BSSID = bssid });
+            }catch(SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        }//insertBssidIndex
+
         public void dropTable() {
             try {
                 connection.DropTable<AccessPoint>();
@@ -112,8 +130,12 @@ namespace GetWifi.src.database {
             try {
                 connection.DeleteAll<AccessPoint>();
                 connection.DeleteAll<ScanData>();
+                connection.DeleteAll<RoomIndex>();
+                connection.DeleteAll<BSSIDIndex>();
                 connection.Execute("delete from sqlite_sequence where name= 'AccessPoint'");
                 connection.Execute("delete from sqlite_sequence where name='ScanData'");
+                connection.Execute("delete from sqlite_sequence where name='RoomIndex'");
+                connection.Execute("delete from sqlite_sequence where name='BSSIDIndex'");
             }
             catch (SQLiteException ex) {
                 Console.WriteLine(ex);
@@ -166,6 +188,22 @@ namespace GetWifi.src.database {
             }
         } //getScanData()
 
+        public TableQuery<RoomIndex> getRoomIndex() {
+            try {
+                return connection.Table<RoomIndex>();
+            }catch(SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        } //getRoomIndex()
+
+        public TableQuery<BSSIDIndex> getBssidIndex() {
+            try {
+                return connection.Table<BSSIDIndex>();
+            }catch(SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        } //getBssidIndex()
+
         public List<string> createCsv() {
             var scanDataList = getScanData();
             var toList = new List<string>();
@@ -176,6 +214,28 @@ namespace GetWifi.src.database {
             }
             return toList;
         } //createCsv()
+
+        public string setIndexTable() {
+            var room = getAccessPoints().ToList().Select(ap => ap.Room).Distinct();
+            var bssid = getScanData().ToList().Select(scan => scan.BSSID).Distinct();
+            foreach (var room_item in room) {
+                var hasSameColum = connection.Table<RoomIndex>().Where(w => w.Room == room_item).FirstOrDefault();
+                if (hasSameColum != null) {
+                    continue;
+                }
+                insertRoomIndex(room_item);
+                Console.WriteLine(room_item);
+            }
+            foreach(var bssid_item in bssid) {
+                var hasSameColum = connection.Table<BSSIDIndex>().Where(w => w.BSSID == bssid_item).FirstOrDefault();
+                if (hasSameColum != null) {
+                    continue;
+                }
+                insertBssidIndex(bssid_item);
+                Console.WriteLine(bssid_item);
+            }
+            return "finished!";
+        }
 
         public string resetScanData() {
             try {
@@ -192,7 +252,7 @@ namespace GetWifi.src.database {
             }
         }
 
-        private void calcAveAndDisp(ref int average, ref int variation, List<ScanData> scanDataTable, int count) {
+        private void calcAveAndVar(ref int average, ref int variation, List<ScanData> scanDataTable, int count) {
             //BSSIDÇ≤Ç∆Ç…ïΩãœÇ∆ï™éUÇåvéZÇ∑ÇÈÅB
             foreach (var tb_item in scanDataTable) {
                 average += tb_item.Level;
@@ -202,7 +262,7 @@ namespace GetWifi.src.database {
                 int element = tb_item.Level - average;
                 variation += element * element;
             }
-            variation /= count; //ï™éUéZèo
+            variation /= count-1; //ï™éUéZèo
         }
     }
 }
