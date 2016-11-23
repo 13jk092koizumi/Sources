@@ -162,21 +162,41 @@ namespace GetWifi.src {
         }
 
         private void outSvmFile() {
-            var dialog = new ProgressDialog(this);
-            dialog.SetMessage("保存中");
-            dialog.SetProgressStyle(ProgressDialogStyle.Spinner);
-            dialog.Show();
-            try {
-                var svm = new database.Svm();
-                string message = svm.createTrainFile();
-                Toast.MakeText(this, message, ToastLength.Long).Show();
-            }
-            catch(Exception e) {
-                throw new Exception(e.Message);
-            }
-            finally {
-                dialog.Dismiss();
-            }
+            /*string ID = null;
+            string param = null;
+            var dlg = setdialogView( ID,  param);
+            dlg.SetNegativeButton("キャンセル", (s, arg) => { });
+            dlg.Create().Show();
+            */
+            var svm = new database.Svm();
+            string message = svm.createTrainFile();
+            Toast.MakeText(this, message, ToastLength.Long).Show();
+        }
+
+        private AlertDialog.Builder setdialogView(string ID, string param) {
+            var items = new[] { "BSSID", "LEVEL", "LEVEL(AVERAGE)" };
+            var dlg = new AlertDialog.Builder(this);
+            dlg.SetTitle("パラメータを選択");
+            //ビュー作成
+            var layout = new LinearLayout(this) { Orientation = Orientation.Vertical };
+            layout.SetGravity(GravityFlags.Left);
+            var adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem, items);
+            var tvID = new TextView(this) { Text = "パラメータ番号" };
+            var spinnerID = new Spinner(this) { Adapter = adapter };
+            var tvParam = new TextView(this) { Text = "パラメータ値" };
+            var spinnerParam = new Spinner(this) { Adapter = adapter };
+            layout.AddView(tvID);
+            layout.AddView(spinnerID);
+            layout.AddView(tvParam);
+            layout.AddView(spinnerParam);
+            //ビューをダイアログにセット
+            dlg.SetView(layout);
+            //選択された要素の取得
+            dlg.SetPositiveButton("OK", (s, arg) => {
+                ID = (string)spinnerID.SelectedItem;
+                param = (string)spinnerParam.SelectedItem;
+            });
+            return dlg;
         }
 
     } // class mainactivity

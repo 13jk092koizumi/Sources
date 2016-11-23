@@ -53,6 +53,7 @@
     <Compile Include="src\database\Svm.cs" />
     <Compile Include="src\SaveFile.cs" />
     <Compile Include="src\FragmentTestActivity.cs" />
+    <Compile Include="src\SvmPredict.cs" />
     <Compile Include="src\TableActivity.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
