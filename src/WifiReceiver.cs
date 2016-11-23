@@ -23,7 +23,7 @@ namespace GetWifi.src {
         DateTime mDate;              //start scan DateTime
         DBConfig mDb;                //database
         string mPlaceName;           //scaned place name
-        const int mLoopMax = 200;     //how many scan
+        const int mLoopMax = 100;     //how many scan
         int mLoopCount;
         public WifiReceiver() { }
 
@@ -47,8 +47,6 @@ namespace GetWifi.src {
             mProgDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
             mProgDialog.Max = mLoopMax;
             mLoopCount = 1;
-            var eventTxt = MainActivity.mInstance.FindViewById<TextView>(Resource.Id.EventText);
-            eventTxt.Text = "";
         }
 
         public async override void OnReceive(Context context, Intent intent) {
@@ -71,14 +69,17 @@ namespace GetWifi.src {
                 if (mLoopCount <= mLoopMax) {
                     mWifiMng.StartScan();
                 } else {
-                    var builder = new AlertDialog.Builder(MainActivity.mInstance);
-                    builder.SetMessage("スキャンが終了しました");
-                    var dialog = builder.Create();
-                    mProgDialog.Dismiss();
-                    dialog.Show();
+                    await Task.Run(() => new Handler(Looper.MainLooper).Post(()=>mProgDialog.SetMessage("DBへ保存中です...")));
                     //データの追加                    
                     mDb.insertAccessPoints(mResults, mPlaceName, mDate);
-                        
+                    mDb.insertScanDateLog(mPlaceName, mDate);
+                    mDb.setIndexTable(mPlaceName);
+                    mProgDialog.Dismiss();
+                    var builder = new AlertDialog.Builder(MainActivity.mInstance);
+                    builder.SetTitle("通知");
+                    builder.SetMessage("スキャンが完了しました。");
+                    var dialog = builder.Create();
+                    dialog.Show();
                     context.UnregisterReceiver(this);
                 }
             } else {
@@ -113,9 +114,9 @@ namespace GetWifi.src {
 
         private void updateProgress() {
             int time = calcWaitTime();
-            string message = string.Format("スキャン中　残り{0}秒", time);
+            string message = string.Format("スキャン中    推定残り{0}秒", time);
             new Handler(Looper.MainLooper).Post(() => mProgDialog.SetMessage(message));
-            System.Threading.Thread.Sleep(300);
+            System.Threading.Thread.Sleep(100);
         }
 
         private int calcWaitTime() {

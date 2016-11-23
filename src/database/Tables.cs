@@ -17,6 +17,16 @@ namespace GetWifi.src.database {
         }
     }
 
+    public class ScanDateLog {
+        [PrimaryKey,AutoIncrement]
+        public int ID { get; set; }
+        public string Room { get; set; }
+        public DateTime Date { get; set; }
+        public override string ToString() {
+            return string.Format("{0},{1},{2}", ID, Room, Date);
+        }
+    }
+
     public class ScanData {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }

@@ -8,6 +8,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Android.Net.Wifi;
 using Android.OS;
+using System;
 
 namespace GetWifi.src {
     [Activity(Label = "GetWifi", MainLauncher = true, Icon = "@drawable/icon",ScreenOrientation =Android.Content.PM.ScreenOrientation.Portrait)]
@@ -34,10 +35,11 @@ namespace GetWifi.src {
 
         protected override void OnResume() {
             base.OnResume();
+
             var tbLayout = FindViewById<TableLayout>(Resource.Id.tableLayout);
             mResults = mWifi.ScanResults;
-            // 結果を表示
-            var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
+            //結果を表示
+           var txtView1 = FindViewById<TextView>(Resource.Id.textView1);
             txtView1.Text = "APを" + mResults.Count.ToString() + "件発見しました";
 
             foreach (var res in mResults) {
@@ -66,7 +68,7 @@ namespace GetWifi.src {
                 bool distinctFlg = false;//重複フラグ
                 foreach (var tempList_item in tempList) {
                     //tempListに同じRoomがあったら重複フラグをtrueに
-                    if(tempList_item == places_item.Room) {
+                        if (tempList_item == places_item.Room) {
                         distinctFlg = true;
                     }
                 }
@@ -77,33 +79,33 @@ namespace GetWifi.src {
             adapter.AddAll(tempList);
             autoCompTxtView.Adapter = adapter;
             //キーボードのエンターキー検知
-            autoCompTxtView.KeyPress += (object sender,View.KeyEventArgs e)=> {
-                //e.Handled = false;
-                if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter) {
-                    var methodManager = (InputMethodManager)GetSystemService(InputMethodService);
-                    var currentFocus = Window.CurrentFocus;
-                    if (currentFocus != null) {
-                        methodManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+            autoCompTxtView.KeyPress += (object sender, View.KeyEventArgs e) => {
+                    e.Handled = false;
+                    if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter) {
+                        var methodManager = (InputMethodManager)GetSystemService(InputMethodService);
+                        var currentFocus = Window.CurrentFocus;
+                        if (currentFocus != null) {
+                            methodManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+                        }
                     }
-                }
-                //btnInput.RequestFocus(); //スキャンボタンにフォーカスを移動
-            };
+                    btnInput.RequestFocus(); //スキャンボタンにフォーカスを移動
+                };
             //イベント作成
             btnInput.Click += async delegate {
-                btnInput.Enabled = false; //連打防止のためいったん無効化
-                mPlaceName = autoCompTxtView.Text;
-                if (mPlaceName.Length == 0) {
-                    Toast.MakeText(this, "注意:計測場所を入力しないとスキャンできません", ToastLength.Long).Show();
+                    btnInput.Enabled = false; //連打防止のためいったん無効化
+                    mPlaceName = autoCompTxtView.Text;
+                    if (mPlaceName.Length == 0) {
+                        Toast.MakeText(this, "注意:計測場所を入力しないとスキャンできません", ToastLength.Long).Show();
+                        await Task.Run(() => System.Threading.Thread.Sleep(1000)); //1秒ボタンを無効化
+                        btnInput.Enabled = true; //ボタンを有効に
+                        return;
+                    }
+                    Toast.MakeText(this, string.Format("入力:{0}", mPlaceName), ToastLength.Short).Show();
+                    //スキャン開始
+                    scanWifi();
                     await Task.Run(() => System.Threading.Thread.Sleep(1000)); //1秒ボタンを無効化
                     btnInput.Enabled = true; //ボタンを有効に
-                    return;
-                }
-                Toast.MakeText(this, string.Format("入力:{0}", mPlaceName), ToastLength.Short).Show();
-                // スキャン開始
-                scanWifi();
-                await Task.Run(()=>System.Threading.Thread.Sleep(1000)); //1秒ボタンを無効化
-                btnInput.Enabled = true; //ボタンを有効に
-            };
+                };
             btnDelete.Click += delegate {
                 mDb.deleteData();
                 Toast.MakeText(this, "テーブルをDELETEしました。", ToastLength.Long).Show();
@@ -115,35 +117,31 @@ namespace GetWifi.src {
                 StartActivity(intent);
             };
             btnSave.Click += delegate {
-                var menu = new PopupMenu(this,btnSave);
+                var menu = new PopupMenu(this, btnSave);
                 menu.Inflate(Resource.Menu.IOFileMenu);
                 menu.Show();
                 //メニュー選択時のイベント
-                menu.MenuItemClick += (s,arg) => {
+                menu.MenuItemClick += (s, arg) => {
+                    if (arg == null) {
+                        Console.WriteLine("arg was null!!"); return;
+                    }
                     switch (arg.Item.ItemId) {
                         case Resource.Id.io_file_menu_item01:
-                            outCsvFile();       break;
+                            outCsvFile(); break;
                         case Resource.Id.io_file_menu_item02:
-                            outSvmFile();
-                            break;
-                        case Resource.Id.io_file_menu_item03:
-                            mDb.setIndexTable();     break;
+                            menu.Dismiss();
+                            outSvmFile(); break;
                         default:
-                            menu.Dismiss();     break;
+                            menu.Dismiss(); break;
                     }
-                };
+               };
             };
             FindViewById<Button>(Resource.Id.btnReset).Click += delegate {
                 var message = mDb.resetScanData();
                 Toast.MakeText(this, message, ToastLength.Short).Show();
             };
-        } //onResume()
 
-        protected override void OnStop() {
-            base.OnStop();
-            string mes = mDb.resetScanData();
-            //System.Console.WriteLine("onStop() called and message was({0})", mes);
-        }
+        } //onResume()
 
         private void scanWifi() {
             //wifi情報を取得
@@ -164,9 +162,21 @@ namespace GetWifi.src {
         }
 
         private void outSvmFile() {
-            var svm = new database.Svm();
-            string message = svm.createTrainFile();
-            Toast.MakeText(this, message, ToastLength.Long).Show();
+            var dialog = new ProgressDialog(this);
+            dialog.SetMessage("保存中");
+            dialog.SetProgressStyle(ProgressDialogStyle.Spinner);
+            dialog.Show();
+            try {
+                var svm = new database.Svm();
+                string message = svm.createTrainFile();
+                Toast.MakeText(this, message, ToastLength.Long).Show();
+            }
+            catch(Exception e) {
+                throw new Exception(e.Message);
+            }
+            finally {
+                dialog.Dismiss();
+            }
         }
 
     } // class mainactivity

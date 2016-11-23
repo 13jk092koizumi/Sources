@@ -27,6 +27,7 @@ namespace GetWifi.src.database {
                 connection.CreateTable<ScanData>();
                 connection.CreateTable<BSSIDIndex>();
                 connection.CreateTable<RoomIndex>();
+                connection.CreateTable<ScanDateLog>();
             }
             catch (SQLiteException ex) {
                 throw new Exception("can't create table!\tERROR:"+ex.Message);
@@ -79,6 +80,38 @@ namespace GetWifi.src.database {
             }
         } //insertAccessPoints()
 
+        public void insertScanDateLog(string room, DateTime date) {
+            try {
+                #region
+                /*
+                List<ScanDateLog> dateLogList = new List<ScanDateLog>();
+                var ap = getAccessPoints().ToList();
+                var scan = getScanData().ToList();
+                foreach (var ap_item in ap) {
+                    //AccessPointÇ∆ScanDataÇÃì˙ïtÇî‰ärÅAàÍívÇµÇΩïîâÆñºÇScanDateLogÇ…äiî[
+                    var sameDate = scan.Where(w => ap_item.Date == w.Date).FirstOrDefault();
+                    var isDistinct = dateLogList.Where(w => w.Date == sameDate.Date).FirstOrDefault();
+                    if (sameDate != null && isDistinct == null) {
+                        dateLogList.Add(new ScanDateLog { Room = ap_item.Room, Date = ap_item.Date });
+                    }
+                }*/
+                #endregion
+                Console.WriteLine("{0}ÇDBÇ…í«â¡ÇµÇ‹ÇµÇΩÅB", room);
+                connection.Insert(new ScanDateLog { Room = room, Date = date });
+                
+                var afterTable = getScanDateLog();
+                Console.WriteLine("ScanDateLog:");
+                foreach(var item in afterTable) {
+                    Console.WriteLine(item.ToString());
+                }
+                
+                //connection.DeleteAll<ScanDateLog>();
+                //connection.Execute("delete from sqlite_sequence where name= 'ScanDateLog'");
+            }
+            catch (SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        }
         public void insertScanData(IList<Android.Net.Wifi.ScanResult> scanResult, DateTime date) {
             try {
                 //ìdîgã≠ìxÇÃã≠Ç¢èáÇ≈ListSizeMaxå¬ï€ë∂
@@ -132,10 +165,17 @@ namespace GetWifi.src.database {
                 connection.DeleteAll<ScanData>();
                 connection.DeleteAll<RoomIndex>();
                 connection.DeleteAll<BSSIDIndex>();
+                connection.DeleteAll<ScanDateLog>();
                 connection.Execute("delete from sqlite_sequence where name= 'AccessPoint'");
                 connection.Execute("delete from sqlite_sequence where name='ScanData'");
                 connection.Execute("delete from sqlite_sequence where name='RoomIndex'");
                 connection.Execute("delete from sqlite_sequence where name='BSSIDIndex'");
+                connection.Execute("delete from sqlite_sequence where name= 'ScanDateLog'");
+                //connection.Execute("update sqlite_sequence set seq=0 where name= 'AccessPoint'");
+                //connection.Execute("update sqlite_sequence set seq=0 where name='ScanData'");
+                //connection.Execute("update sqlite_sequence set seq=0 name='RoomIndex'");
+                //connection.Execute("update sqlite_sequence set seq=0 name='BSSIDIndex'");
+                //connection.Execute("update sqlite_sequence set seq=0 name= 'ScanDateLog'");
             }
             catch (SQLiteException ex) {
                 Console.WriteLine(ex);
@@ -178,6 +218,14 @@ namespace GetWifi.src.database {
             }
         } //getAccessPoints()
 
+        public TableQuery<ScanDateLog> getScanDateLog() {
+            try {
+                return connection.Table<ScanDateLog>();
+            }catch(SQLiteException e) {
+                throw new Exception(e.Message);
+            }
+        }
+
         public TableQuery<ScanData> getScanData() {
             try {
                 return connection.Table<ScanData>();
@@ -215,26 +263,23 @@ namespace GetWifi.src.database {
             return toList;
         } //createCsv()
 
-        public string setIndexTable() {
-            var room = getAccessPoints().ToList().Select(ap => ap.Room).Distinct();
+        public void setIndexTable(string room) {
+            //var room = getAccessPoints().ToList().Select(ap => ap.Room).Distinct();
             var bssid = getScanData().ToList().Select(scan => scan.BSSID).Distinct();
-            foreach (var room_item in room) {
-                var hasSameColum = connection.Table<RoomIndex>().Where(w => w.Room == room_item).FirstOrDefault();
-                if (hasSameColum != null) {
-                    continue;
-                }
-                insertRoomIndex(room_item);
-                Console.WriteLine(room_item);
+            Console.WriteLine("í«â¡ÇµÇΩÉfÅ[É^ÅF");
+            var hasSameRoom = connection.Table<RoomIndex>().Where(w => w.Room == room).FirstOrDefault();
+            if (hasSameRoom == null) {
+                Console.WriteLine("[ {0} ]",room);
+                insertRoomIndex(room);
             }
-            foreach(var bssid_item in bssid) {
-                var hasSameColum = connection.Table<BSSIDIndex>().Where(w => w.BSSID == bssid_item).FirstOrDefault();
-                if (hasSameColum != null) {
+            foreach (var bssid_item in bssid) {
+                var hasSameBssid = connection.Table<BSSIDIndex>().Where(w => w.BSSID == bssid_item).FirstOrDefault();
+                if (hasSameBssid != null) {
                     continue;
                 }
                 insertBssidIndex(bssid_item);
-                Console.WriteLine(bssid_item);
+                Console.WriteLine("[ {0} ]",bssid_item);
             }
-            return "finished!";
         }
 
         public string resetScanData() {
