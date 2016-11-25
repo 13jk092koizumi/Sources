@@ -2,4 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@+id/io_file_menu_item01" android:title="csv出力"></item>
   <item android:id="@+id/io_file_menu_item02" android:title="学習データ出力"></item>
+  <item android:id="@+id/io_file_menu_item03" android:title="テストデータ出力"></item>
 </menu>

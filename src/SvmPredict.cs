@@ -58,6 +58,7 @@ namespace GetWifi.src {
                     mWifiMng.StartScan();
                 } else {
                     var svm = new database.Svm();
+                    svm.createPredictFile(mResultsList, "/10ScanPredict.txt");
                     Android.Util.Log.Debug("PredictBroadcast", "スキャン終了");
                     mProg.Dismiss();
                     Toast.MakeText(context, "テストデータを出力しました。", ToastLength.Short).Show();

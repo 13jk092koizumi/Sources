@@ -586,6 +586,9 @@ namespace GetWifi
 			// aapt resource value: 0x7f08001e
 			public const int io_file_menu_item02 = 2131230750;
 			
+			// aapt resource value: 0x7f08001f
+			public const int io_file_menu_item03 = 2131230751;
+			
 			// aapt resource value: 0x7f080007
 			public const int linearLayout1 = 2131230727;
 			

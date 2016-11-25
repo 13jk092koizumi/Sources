@@ -130,7 +130,9 @@ namespace GetWifi.src {
                             outCsvFile(); break;
                         case Resource.Id.io_file_menu_item02:
                             menu.Dismiss();
-                            outSvmFile(); break;
+                            outSvmTrainFile(); break;
+                        case Resource.Id.io_file_menu_item03:
+                            outSvmPredictFile(); break;
                         default:
                             menu.Dismiss(); break;
                     }
@@ -161,7 +163,7 @@ namespace GetWifi.src {
             //save.Delete();
         }
 
-        private void outSvmFile() {
+        private void outSvmTrainFile() {
             /*string ID = null;
             string param = null;
             var dlg = setdialogView( ID,  param);
@@ -199,5 +201,10 @@ namespace GetWifi.src {
             return dlg;
         }
 
-    } // class mainactivity
+        private void outSvmPredictFile() {
+            var predict = new SvmPredict(this);
+            predict.predict(10);
+        }
+
+    } // class mainActivity
 } // namespace GetWifi

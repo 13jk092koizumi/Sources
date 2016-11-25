@@ -55,12 +55,28 @@ namespace GetWifi.src.database {
                 }
             }
             var svmFormatList = svmParamList.ToLookup(svm => svm.Lavel); //1対多のリストに変換
-            outputSvmFile(svmFormatList); //テキストファイルとして出力
+            outputTrainFile(svmFormatList); //テキストファイルとして出力
             
             return "出力完了しました。";
         }
 
-        private void outputSvmFile( ILookup<int, SvmParam> paramList) {
+        public void createPredictFile(List<List<Android.Net.Wifi.ScanResult>> results, string fileName) {
+            var sb = new StringBuilder();
+            var save = new SaveFile(fileName);
+            int lavel = 0;
+            foreach(var res in results) {
+                lavel++;
+                sb.Append(lavel.ToString());
+                foreach(var res_item in res) {
+                    sb.AppendFormat(" {0}:{1}", getBssidIndex(res_item.Bssid), res_item.Level);
+                }
+                sb.AppendLine();
+            }
+            Console.Write(sb.ToString());
+            save.Write(sb.ToString());
+        }
+
+        private void outputTrainFile( ILookup<int, SvmParam> paramList) {
             var file = new SaveFile("/RoomBssidLevel.txt", true);
             var sb = new StringBuilder();
             foreach (var svm in paramList) {
