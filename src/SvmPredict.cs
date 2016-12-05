@@ -57,8 +57,11 @@ namespace GetWifi.src {
                     ++mLoop;
                     mWifiMng.StartScan();
                 } else {
-                    var svm = new database.Svm();
-                    svm.createPredictFile(mResultsList, "/10ScanPredict.txt");
+                    var svm = new database.SvmFile();
+                    string fileName = "scanPredict.txt";
+                    fileName = string.Format("/{0}{1}", mScanNum, fileName);
+                    Console.WriteLine(fileName);
+                    svm.createPredictFile(mResultsList, fileName);
                     Android.Util.Log.Debug("PredictBroadcast", "スキャン終了");
                     mProg.Dismiss();
                     Toast.MakeText(context, "テストデータを出力しました。", ToastLength.Short).Show();
@@ -70,8 +73,7 @@ namespace GetWifi.src {
                 }
             }
             private void doProcess() {
-                var svm = new database.Svm();
-                var sb = new StringBuilder();
+                var svm = new database.SvmFile();
                 var results = mWifiMng.ScanResults;
                 var sortedResult = (from sorted in results
                                     orderby sorted.Level descending

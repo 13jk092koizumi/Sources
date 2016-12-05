@@ -62,14 +62,17 @@ namespace GetWifi.src {
             mResults = sortScanResult();
             var size = mResults.Count;
             if (size > 0) {
-                mDb.insertScanData(mResults, mDate);//DBÇ…Ç¢Ç¡ÇΩÇÒï€ë∂
+                mDb.insertScanData(mLoopCount, mResults, mDate);//DBÇ…Ç¢Ç¡ÇΩÇÒï€ë∂
                 await Task.Run(() => updateProgress());
                 mProgDialog.Progress = mLoopCount;
                 ++mLoopCount;
                 if (mLoopCount <= mLoopMax) {
                     mWifiMng.StartScan();
                 } else {
-                    await Task.Run(() => new Handler(Looper.MainLooper).Post(()=>mProgDialog.SetMessage("DBÇ÷ï€ë∂íÜÇ≈Ç∑...")));
+                    await Task.Run(() => {
+                        new Handler(Looper.MainLooper).Post(() => mProgDialog.SetMessage("DBÇ÷ï€ë∂íÜÇ≈Ç∑..."));
+                        System.Threading.Thread.Sleep(100);
+                        });
                     //ÉfÅ[É^ÇÃí«â¡                    
                     mDb.insertAccessPoints(mResults, mPlaceName, mDate);
                     mDb.insertScanDateLog(mPlaceName, mDate);

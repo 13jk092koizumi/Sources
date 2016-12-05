@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AsyncProgressDialogActivity.cs" />
-    <Compile Include="src\database\Svm.cs" />
+    <Compile Include="src\database\SvmFile.cs" />
     <Compile Include="src\SaveFile.cs" />
     <Compile Include="src\FragmentTestActivity.cs" />
     <Compile Include="src\SvmPredict.cs" />
@@ -128,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\IOFileMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SvmTrainDialog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SvmPredictDialog.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

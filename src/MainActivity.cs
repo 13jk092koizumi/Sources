@@ -19,6 +19,7 @@ namespace GetWifi.src {
         private database.DBConfig mDb;
         private string pathToDatabase;
         private string mPlaceName;
+        protected AlertDialog mSvmDialog;
 
         protected override void OnCreate(Bundle bundle) {
             SetContentView(Resource.Layout.Main);
@@ -164,46 +165,62 @@ namespace GetWifi.src {
         }
 
         private void outSvmTrainFile() {
-            /*string ID = null;
-            string param = null;
-            var dlg = setdialogView( ID,  param);
-            dlg.SetNegativeButton("キャンセル", (s, arg) => { });
-            dlg.Create().Show();
-            */
-            var svm = new database.Svm();
-            string message = svm.createTrainFile();
-            Toast.MakeText(this, message, ToastLength.Long).Show();
+            mSvmDialog = setTraindialogView();
+            mSvmDialog.Show();
         }
 
-        private AlertDialog.Builder setdialogView(string ID, string param) {
-            var items = new[] { "BSSID", "LEVEL", "LEVEL(AVERAGE)" };
+        private AlertDialog setTraindialogView() {
+            var dlgView = LayoutInflater.Inflate(Resource.Layout.SvmTrainDialog, null);
             var dlg = new AlertDialog.Builder(this);
-            dlg.SetTitle("パラメータを選択");
+            dlg.SetTitle("学習データ作成");
             //ビュー作成
-            var layout = new LinearLayout(this) { Orientation = Orientation.Vertical };
-            layout.SetGravity(GravityFlags.Left);
-            var adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerItem, items);
-            var tvID = new TextView(this) { Text = "パラメータ番号" };
-            var spinnerID = new Spinner(this) { Adapter = adapter };
-            var tvParam = new TextView(this) { Text = "パラメータ値" };
-            var spinnerParam = new Spinner(this) { Adapter = adapter };
-            layout.AddView(tvID);
-            layout.AddView(spinnerID);
-            layout.AddView(tvParam);
-            layout.AddView(spinnerParam);
+            var items = new string[] { "BSSID:LEVEL", "BSSID:LEVEL(average)", "BSSID:出現回数" };
+            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
+            var listView = dlgView.FindViewById<ListView>(Resource.Id.svm_train_dialog_list_view);
+            listView.Adapter = adapter;
+            //リストをクリック時のイベントセット
+            listView.ItemClick += (s, args) => {
+                int pos = args.Position;
+                mSvmDialog.Dismiss();
+                mSvmDialog = null;
+                var svm = new database.SvmFile(); //TODO:モード分け
+                string message = svm.createTrainFile();
+                Toast.MakeText(this, message, ToastLength.Long).Show();
+            };
+            
             //ビューをダイアログにセット
-            dlg.SetView(layout);
-            //選択された要素の取得
-            dlg.SetPositiveButton("OK", (s, arg) => {
-                ID = (string)spinnerID.SelectedItem;
-                param = (string)spinnerParam.SelectedItem;
-            });
-            return dlg;
+            dlg.SetView(dlgView);
+            //キャンセルボタン
+            dlg.SetNegativeButton("CANCEL", (s, arg) => {  });
+            return dlg.Create();
         }
 
         private void outSvmPredictFile() {
-            var predict = new SvmPredict(this);
-            predict.predict(10);
+            var dialog = setPredictDialog();
+            dialog.Show();
+        }
+
+        private AlertDialog setPredictDialog() {
+            var dlg = new AlertDialog.Builder(this);
+            var predictdlgView = LayoutInflater.Inflate(Resource.Layout.SvmPredictDialog, null);
+            //ダイアログ初期化
+            dlg.SetTitle("テストデータ作成");
+            dlg.SetMessage("スキャン回数を選択してください");
+            //シークバーのイベント
+            var seek = predictdlgView.FindViewById<SeekBar>(Resource.Id.svm_predict_dialog_seekbar);
+            seek.ProgressChanged += (s, e) => {
+                if (e.FromUser) {
+                    var txtView = predictdlgView.FindViewById<TextView>(Resource.Id.svm_predict_dialog_text_view);
+                    txtView.Text = string.Format("スキャン回数：{0}", e.Progress + 1);
+                }
+            };
+            dlg.SetPositiveButton("スタート", (s, e) => {
+                var predict = new SvmPredict(this);
+                predict.predict(seek.Progress + 1);
+            });
+            dlg.SetNegativeButton("キャンセル", (s, e) => { });
+            dlg.SetView(predictdlgView);
+            return dlg.Create();
         }
 
     } // class mainActivity

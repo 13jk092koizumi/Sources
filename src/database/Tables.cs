@@ -30,12 +30,13 @@ namespace GetWifi.src.database {
     public class ScanData {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        public int ScanNum { get; set; }
         [Indexed]
         public string BSSID { get; set; }
         public int Level { get; set; }
         public DateTime Date { get; set; }
         public override string ToString() {
-            return string.Format("{0},{1},{2},{3}", ID, BSSID, Level, Date);
+            return string.Format("{0},{1},{2},{3},{4}", ID, ScanNum, BSSID, Level, Date);
         }
     }
 

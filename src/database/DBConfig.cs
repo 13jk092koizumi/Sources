@@ -112,12 +112,13 @@ namespace GetWifi.src.database {
                 throw new Exception(e.Message);
             }
         }
-        public void insertScanData(IList<Android.Net.Wifi.ScanResult> scanResult, DateTime date) {
+        public void insertScanData(int loop, IList<Android.Net.Wifi.ScanResult> scanResult, DateTime date) {
             try {
                 //ìdîgã≠ìxÇÃã≠Ç¢èáÇ≈ListSizeMaxå¬ï€ë∂
                 var list = new List<ScanData>();
                 for (int i = 0; i < scanResult.Count && i < ListSizeMax; ++i) {
                     list.Add(new ScanData {
+                        ScanNum = loop,
                         BSSID = scanResult[i].Bssid,
                         Level = scanResult[i].Level,
                         Date = date,
@@ -255,7 +256,7 @@ namespace GetWifi.src.database {
         public List<string> createCsv() {
             var scanDataList = getScanData();
             var toList = new List<string>();
-            string field_line = "id,BSSID,LEVEL,Date";
+            string field_line = "id,ScanNum,BSSID,LEVEL,Date";
             toList.Add(field_line);
             foreach (var list_item in scanDataList) {
                 toList.Add(list_item.ToString());

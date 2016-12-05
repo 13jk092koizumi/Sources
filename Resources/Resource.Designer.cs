@@ -580,14 +580,14 @@ namespace GetWifi
 			// aapt resource value: 0x7f080004
 			public const int inputTxtLL = 2131230724;
 			
-			// aapt resource value: 0x7f08001d
-			public const int io_file_menu_item01 = 2131230749;
+			// aapt resource value: 0x7f080020
+			public const int io_file_menu_item01 = 2131230752;
 			
-			// aapt resource value: 0x7f08001e
-			public const int io_file_menu_item02 = 2131230750;
+			// aapt resource value: 0x7f080021
+			public const int io_file_menu_item02 = 2131230753;
 			
-			// aapt resource value: 0x7f08001f
-			public const int io_file_menu_item03 = 2131230751;
+			// aapt resource value: 0x7f080022
+			public const int io_file_menu_item03 = 2131230754;
 			
 			// aapt resource value: 0x7f080007
 			public const int linearLayout1 = 2131230727;
@@ -607,23 +607,32 @@ namespace GetWifi
 			// aapt resource value: 0x7f080012
 			public const int rowtext3 = 2131230738;
 			
-			// aapt resource value: 0x7f080017
-			public const int rowtext4 = 2131230743;
-			
-			// aapt resource value: 0x7f080018
-			public const int rowtext5 = 2131230744;
-			
-			// aapt resource value: 0x7f080019
-			public const int rowtext6 = 2131230745;
-			
 			// aapt resource value: 0x7f08001a
-			public const int rowtext7 = 2131230746;
+			public const int rowtext4 = 2131230746;
 			
 			// aapt resource value: 0x7f08001b
-			public const int rowtext8 = 2131230747;
+			public const int rowtext5 = 2131230747;
+			
+			// aapt resource value: 0x7f08001c
+			public const int rowtext6 = 2131230748;
+			
+			// aapt resource value: 0x7f08001d
+			public const int rowtext7 = 2131230749;
+			
+			// aapt resource value: 0x7f08001e
+			public const int rowtext8 = 2131230750;
 			
 			// aapt resource value: 0x7f080014
 			public const int scan_button = 2131230740;
+			
+			// aapt resource value: 0x7f080015
+			public const int svm_predict_dialog_seekbar = 2131230741;
+			
+			// aapt resource value: 0x7f080016
+			public const int svm_predict_dialog_text_view = 2131230742;
+			
+			// aapt resource value: 0x7f080017
+			public const int svm_train_dialog_list_view = 2131230743;
 			
 			// aapt resource value: 0x7f08000e
 			public const int tableLayout = 2131230734;
@@ -631,14 +640,14 @@ namespace GetWifi
 			// aapt resource value: 0x7f08000f
 			public const int tableRow = 2131230735;
 			
-			// aapt resource value: 0x7f080015
-			public const int tb_TextView1 = 2131230741;
+			// aapt resource value: 0x7f080018
+			public const int tb_TextView1 = 2131230744;
 			
-			// aapt resource value: 0x7f08001c
-			public const int tb_btnBack = 2131230748;
+			// aapt resource value: 0x7f08001f
+			public const int tb_btnBack = 2131230751;
 			
-			// aapt resource value: 0x7f080016
-			public const int tb_tableLayout = 2131230742;
+			// aapt resource value: 0x7f080019
+			public const int tb_tableLayout = 2131230745;
 			
 			// aapt resource value: 0x7f08000c
 			public const int textView1 = 2131230732;
@@ -669,13 +678,19 @@ namespace GetWifi
 			public const int ProgressDialogLayout = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int TableActivityLayout = 2130903044;
+			public const int SvmPredictDialog = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int tb_layout = 2130903045;
+			public const int SvmTrainDialog = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int tb_layout2 = 2130903046;
+			public const int TableActivityLayout = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int tb_layout = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int tb_layout2 = 2130903048;
 			
 			static Layout()
 			{
